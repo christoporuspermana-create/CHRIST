@@ -1,167 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Untuk Nayla — Website Bucin</title>
-  <style>
-    :root{ --bg:#fff7fb; --card:#fff; --accent:#ff6b9a; --muted:#8b8b98; --glass: rgba(255,255,255,0.7)}
-    *{box-sizing:border-box;font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
-    body{margin:0;background:linear-gradient(180deg,#fff7fb 0%, #fff 40%);color:#333}
-    header{padding:40px 20px;text-align:center}
-    .title{font-size:2.25rem;margin:0;display:flex;align-items:center;justify-content:center;gap:12px}
-    .subtitle{color:var(--muted);margin-top:6px}
-    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;padding:20px;max-width:1100px;margin:20px auto}
-
-    .card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(170,140,160,0.08);position:relative;overflow:hidden}
-    .heart{position:absolute;right:-40px;top:-40px;opacity:0.06;font-size:200px;transform:rotate(-20deg)}
-    .avatar{width:84px;height:84px;border-radius:50%;display:inline-block;overflow:hidden;vertical-align:middle}
-    .name{font-weight:700;font-size:1.1rem;margin-left:12px}
-    .meta{color:var(--muted);font-size:0.9rem}
-    .praise{margin-top:12px;font-size:1rem}
-
-    .gallery{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-    .sticker{width:96px;height:96px;border-radius:12px;background:linear-gradient(180deg,#fff,#fffefc);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(120,90,110,0.06)}
-    .sticker svg{width:70px;height:70px}
-
-    footer{padding:30px;text-align:center;color:var(--muted)}
-    
-    /* Tambahan style untuk tombol di footer */
-    footer .btn-cta {
-        display: block; /* Agar tombol berada di baris baru dan melebar */
-        margin: 20px auto 0 auto; /* Margin di atas tombol dan ditengah */
-        max-width: fit-content; /* Biar ukurannya pas dengan isi teks */
-        font-size: 1.1rem; /* Ukuran font lebih besar sedikit */
-        padding: 14px 24px;
-    }
-
-    /* cute button */
-    .btn{display:inline-block;background:var(--accent);color:white;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600;box-shadow:0 10px 30px rgba(255,107,154,0.18)}
-
-    /* confetti */
-    .confetti{position:fixed;left:0;right:0;top:0;pointer-events:none;height:0}
-
-    @media (max-width:420px){.title{font-size:1.6rem}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinamika Persuasi di Abad ke-21</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="confetti" aria-hidden="true">
-    </div>
-  <header>
-    <div class="title">❤️ Untuk Nayla, Dari Ke'is</div>
-    <div class="subtitle">Website yang dibuat sama anak multimedia untuk pacarnya tercinta (anjay, aku ngerjain ini 2 minggu) ✨</div>
-  </header>
-
-  <main class="card-grid">
-    <article class="card">
-      <div class="heart">❤</div>
-      <div style="display:flex;align-items:center">
-        <div class="avatar" style="background:linear-gradient(135deg,#ffefe8,#fff1fb);display:flex;align-items:center;justify-content:center">
-          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="60" cy="60" r="56" fill="#fff" />
-            <g transform="translate(18,24)">
-              <ellipse cx="30" cy="36" rx="22" ry="18" fill="#ffdbe6" />
-              <circle cx="20" cy="24" r="4" fill="#6b3f56" />
-              <circle cx="40" cy="24" r="4" fill="#6b3f56" />
-              <path d="M18 46 Q30 56 42 46" stroke="#6b3f56" stroke-width="2" fill="none" stroke-linecap="round" />
-            </g>
-          </svg>
+<body class="bg-slate-50 text-slate-900">
+    <div class="hidden">
         </div>
-        <div style="margin-left:12px">
-          <div class="name">Nayla si gumushh</div>
-          <div class="meta">Hai cayangg mai bebii luvlyy, semoga kamu suka ya!!</div>
+
+    <nav class="sticky top-0 z-50 bg-[#0ea5e9] text-white py-4 shadow-lg">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <h1 class="text-xl font-bold">Dinamika Persuasi</h1>
+            <div class="space-x-4 hidden md:flex">
+                <a href="#intro" class="hover:underline">Definisi</a>
+                <a href="#elm" class="hover:underline">Mekanisme</a>
+                <a href="#digital" class="hover:underline">Era Digital</a>
+                <a href="#ethics" class="hover:underline">Etika</a>
+            </div>
         </div>
-      </div>
-      <p class="praise">Hai sayangg, makasi ya udah jadi tempat untuk aku berkeluh kesah, untuk cerita, untuk disita waktunya padahal gaterlalu penting hehehe. I love you 💖</p>
-      <div style="margin-top:8px"><a class="btn" href="#stories">Lihat cerita manis</a></div>
-    </article>
+    </nav>
 
-    <article class="card" id="stories">
-      <h3 style="margin:0 0 8px 0">Kenangan kenangan kecil tentang kita, yang ngebuat aku bersyukur banget punya kamu 🤏</h3>
-      <p class="meta">Beberapa hal yang udah kita lakukan di 2025 ini.</p>
+    <header id="intro" class="bg-gradient-to-b from-[#0ea5e9] to-[#0369a1] text-white py-20 px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6">Persuasi: Seni & Sains Memengaruhi</h2>
+            <p class="text-lg md:text-2xl max-w-3xl mx-auto opacity-90 leading-relaxed">
+                Berdasarkan mahakarya Richard M. Perloff, kita membedah bagaimana komunikasi membentuk, memperkuat, dan mengubah sikap manusia di tengah gempuran informasi digital.
+            </p>
+        </div>
+    </header>
 
-      <div style="margin-top:12px">
-        <strong>Nobar 33 Film 🎬</strong>
-        <p class="meta">Kamu pasti tau kan, tahun ini kita nonton <strong>33 film</strong>, termasuk <strong>19 di bioskop</strong> dan puluhan di streaming bareng bareng. Kamu selalu jadi bagian untuk milih film yang mau kita tonton, makasi ya buat <strong>6600 Menitnya</strong>, dan buat aku, <strong>Zootopia 2</strong> jadi salah satu film favorit yang udah kita tonton! Menurut kamu?</p>
-      </div>
+    <main class="container mx-auto px-6 py-12 space-y-24">
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <h3 class="text-3xl font-bold text-[#0369a1]">5 Elemen Kunci Persuasi</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Persuasi bukanlah sebuah kejadian tunggal, melainkan proses simbolis yang kompleks. Menurut Perloff, ada lima pilar yang harus ada agar sebuah komunikasi dapat disebut persuasif: proses simbolis, usaha sadar, persuasi diri, transmisi pesan, dan kebebasan memilih.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white rounded-xl shadow-sm border-l-4 border-[#0ea5e9]">
+                        <span class="text-2xl block mb-2">💬</span>
+                        <h4 class="font-bold">Simbolis</h4>
+                        <p class="text-sm">Menggunakan bahasa dan tanda bermakna.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-sm border-l-4 border-[#0ea5e9]">
+                        <span class="text-2xl block mb-2">🎯</span>
+                        <h4 class="font-bold">Sadar</h4>
+                        <p class="text-sm">Dilakukan dengan niat yang disengaja.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-sm border-l-4 border-[#0ea5e9]">
+                        <span class="text-2xl block mb-2">🧠</span>
+                        <h4 class="font-bold">Diri</h4>
+                        <p class="text-sm">Audiens meyakinkan diri mereka sendiri.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-sm border-l-4 border-[#0ea5e9]">
+                        <span class="text-2xl block mb-2">🕊️</span>
+                        <h4 class="font-bold">Bebas</h4>
+                        <p class="text-sm">Tanpa adanya paksaan atau ancaman.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl flex flex-col">
+                <p class="text-center font-bold text-[#0369a1] mb-4">Tujuan Utama Persuasi</p>
+                <div class="chart-container">
+                    <canvas id="goalsChart"></canvas>
+                </div>
+                <p class="mt-6 text-sm text-slate-500 italic">
+                    Visualisasi ini menunjukkan distribusi tujuan persuasi: Membentuk (Shaping) sikap baru, Memperkuat (Reinforcing) yang sudah ada, atau Mengubah (Changing) sikap secara radikal. Perubahan sikap adalah yang tersulit.
+                </p>
+            </div>
+        </section>
 
-      <div style="margin-top:12px">
-        <strong>Waktu kamu bantu aku buat ngerjain Artikel Ilmiah Semester 2 📚</strong>
-        <p class="meta">Kamu sabar banget waktu aku buntu untuk nambahin kata yang jauh dari kriteria minimal. Kamu rela ngabisin waktu buat bantuin aku yang ada saat itu artikel ilmiah kamu aja belum selesai, disitu aku seneng, tapi aku gaenak sama kamu, tapi disatu sisi juga cape karena mau rombak topik awalnya hehe, cmn gajadi karena kamu.</p>
-      </div>
+        <section id="elm" class="space-y-12">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h3 class="text-3xl font-bold text-[#0369a1]">Elaboration Likelihood Model (ELM)</h3>
+                <p class="text-slate-600">
+                    Bagaimana otak kita memproses pesan? ELM menjelaskan dua rute kognitif yang kita ambil tergantung pada motivasi dan kemampuan berpikir kita pada saat itu.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-md border-t-8 border-[#0369a1]">
+                    <h4 class="text-xl font-bold mb-4">Rute Sentral</h4>
+                    <p class="text-sm text-slate-600 mb-4">Pemrosesan mendalam terhadap argumen logis. Membutuhkan usaha kognitif tinggi namun menghasilkan perubahan sikap yang permanen.</p>
+                    <ul class="text-xs space-y-2 text-slate-500">
+                        <li>• Fokus pada kualitas data</li>
+                        <li>• Tahan lama dan persisten</li>
+                        <li>• Memprediksi perilaku nyata</li>
+                    </ul>
+                </div>
+                <div class="md:col-span-1">
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border-t-8 border-[#0ea5e9]">
+                    <h4 class="text-xl font-bold mb-4">Rute Periferal</h4>
+                    <p class="text-sm text-slate-600 mb-4">Mengandalkan isyarat sederhana seperti daya tarik fisik atau status ahli tanpa memeriksa argumen secara mendalam.</p>
+                    <ul class="text-xs space-y-2 text-slate-500">
+                        <li>• Fokus pada kredibilitas</li>
+                        <li>• Perubahan bersifat sementara</li>
+                        <li>• Dipicu oleh emosi/estetika</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-center text-sm text-slate-500 max-w-2xl mx-auto">
+                Grafik radar di atas membandingkan kekuatan relatif dari kedua rute. Rute Sentral unggul dalam logika dan durasi, sementara Periferal unggul dalam kecepatan dan kemudahan akses emosional.
+            </p>
+        </section>
 
-      <div style="margin-top:12px">
-        <strong>Punya Ruangan di Hati Christ 🎭</strong>
-        <p class="meta">Kamu selalu bisa bikin suasana hubungan kita berbunga bunga anjay, kamu selalu hepi, selalu ceria, tapi kadang malah aku yang ngerusak semua kebahagiaan itu. Kamu tu bener bener definisi orang yang sangat berpengaruh untuk mood pasangannya anjay, dan itu <STRONG>AKU!!!</STRONG>.</p>
-      </div>
+        <section id="digital" class="bg-white rounded-[3rem] shadow-2xl overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="p-12 lg:p-20 space-y-8">
+                    <h3 class="text-3xl font-bold text-[#0369a1]">Persuasi di Era Digital</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Teknologi digital tidak mengubah psikologi dasar manusia, tetapi mengubah volume, kecepatan, dan jangkauan pesan. Algoritma sekarang mampu melakukan mikro-targeting yang sangat presisi, menciptakan ruang gema (echo chambers) di mana keyakinan kita hanya diperkuat tanpa pernah diuji.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center text-[#0369a1] font-bold">1</div>
+                            <span class="font-medium">Kecepatan Instan (Viralitas)</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center text-[#0369a1] font-bold">2</div>
+                            <span class="font-medium">Interaktivitas Dua Arah</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center text-[#0369a1] font-bold">3</div>
+                            <span class="font-medium">Anonimitas & Kredibilitas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#0369a1] p-12 flex flex-col justify-center">
+                    <div class="chart-container">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                    <p class="text-white text-xs mt-6 opacity-80 text-center">
+                        Tren volume pesan persuasif per jam yang diterima rata-rata orang di era analog vs era digital. Pertumbuhan eksponensial ini memicu kelelahan kognitif.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-      <div style="margin-top:12px">
-        <strong>Support system terbaik buat AKU!! 💪</strong>
-        <p class="meta">Waktu aku lagi panik, lagi cape, kamu selalu jadi angin segar yang mau ngasi semangat buat Aku, kamu gapernah keberatan jadi tempat aku yapping panjang lebar padahal isinya keluhan doang. Makasi ya sayang untuk energi positifnya, motivasi semangat aku sekarang bener bener dari kamu doang tauu, akuu senang!! 😄😄😄</p>
-      </div>
-    </article>
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="bg-white p-8 rounded-3xl shadow-lg border border-slate-100">
+                <h3 class="text-2xl font-bold mb-6 text-[#0369a1]">Daya Tarik & Karakteristik Sumber</h3>
+                <p class="text-sm text-slate-600 mb-8">
+                    Kredibilitas bukan satu-satunya faktor. Daya tarik sosial, kesamaan (similarity), dan otoritas fisik sangat memengaruhi audiens yang berada di rute periferal.
+                </p>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+                <p class="mt-6 text-xs text-slate-500">
+                    Grafik batang membandingkan efektivitas berbagai tipe sumber: Pakar (Expert), Selebriti (Likeability), dan Orang Biasa (Similarity) dalam konteks pesan sosial.
+                </p>
+            </div>
+            <div class="bg-sky-50 p-8 rounded-3xl border-2 border-dashed border-[#0ea5e9]">
+                <h3 class="text-2xl font-bold mb-6 text-[#0369a1]">Himbauan Ketakutan (Fear Appeals)</h3>
+                <p class="text-slate-700 leading-relaxed mb-6">
+                    Menakut-nakuti audiens bisa sangat efektif, tapi berisiko. Perloff menekankan <strong>Extended Parallel Process Model (EPPM)</strong>. Untuk berhasil, pesan ketakutan harus disertai dengan efikasi: solusi yang jelas dan mudah dilakukan.
+                </p>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
+                        <span class="font-bold">Ancaman Tinggi</span>
+                        <span class="text-red-500">⚠️</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
+                        <span class="font-bold">Efikasi Tinggi</span>
+                        <span class="text-green-500">✅</span>
+                    </div>
+                    <div class="p-4 text-center bg-[#0ea5e9] text-white rounded-xl font-bold">
+                        HASIL: Kontrol Bahaya (Perubahan Positif)
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <article class="card">
-      <h3 style="margin:0 0 8px 0">Hal-hal kecil yang bikin aku berbunga bunga anjay mabar ❤️</h3>
-      <p class="meta">Harusnya si kamu bakal baca ini setelah aku ngajakin Relationship Wrapped kita ya, soalnya disini aku bikin di tanggal 10 Desember, cuman isinya mirip kok.</p>
+        <section id="ethics" class="py-12 border-t border-slate-200">
+            <div class="bg-slate-900 text-white p-12 rounded-[3rem] text-center space-y-6">
+                <h3 class="text-3xl font-bold">Kesimpulan Etis</h3>
+                <p class="max-w-2xl mx-auto opacity-80 leading-relaxed">
+                    Persuasi di abad ke-21 adalah pedang bermata dua. Ia bisa menjadi alat untuk kampanye kesehatan yang menyelamatkan nyawa, atau senjata manipulasi politik. Memahami dinamikanya adalah perlindungan terbaik kita untuk tetap menjadi agen bebas di dunia yang penuh pengaruh.
+                </p>
+                <div class="pt-6">
+                    <button onclick="window.scrollTo(0,0)" class="px-8 py-3 bg-[#0ea5e9] hover:bg-[#0284c7] rounded-full font-bold transition-all">Kembali ke Atas</button>
+                </div>
+            </div>
+        </section>
+    </main>
 
-      <div style="margin-top:14px">
-        <strong>Clingiest Side of Nayla</strong>
-        <p class="praise">Aku suka banget waktu kamu cerita hal-hal kecil. Entah itu tentang hari kamu di kampus, tentang temen kamu, atau hal random yang menurut kamu sepele. Tapi buat aku? Itu momen yang bikin aku bisa ngerasa deket banget sama kamu. Aku suka liat kamu disaat kamu bisa mengekspresikan apapun tanpa beban, jadi nayla yang gabisa ngehadapin semuanya sendirian, jadi nayla yang perlu bantuan ke pasangannya, aku sukakk!!!</p>
-      </div>
+    <footer class="bg-slate-100 py-8 text-center text-slate-500 text-sm">
+        <p>&copy; 2023 Ringkasan Akademik Berdasarkan Edisi ke-7 Perloff. Tanpa SVG/Mermaid.</p>
+    </footer>
 
-      <div style="margin-top:14px">
-        <strong>Senyum kamu 😘</strong>
-        <p class="praise">Senyum kamu itu kayak gaada jedanya anjayy, lebar mulu. Kadang aku lagi bete atau sumpek, terus aku kepikiran ekspresi kamu waktu ketawa… atau senyum, entah kenapa langsung kayak ngereset semua stres aku.</p>
-      </div>
+    <script>
+        const ctxGoals = document.getElementById('goalsChart').getContext('2d');
+        new Chart(ctxGoals, {
+            type: 'doughnut',
+            data: {
+                labels: ['Shaping (Membentuk)', 'Reinforcing (Memperkuat)', 'Changing (Mengubah)'],
+                datasets: [{
+                    data: [30, 45, 25],
+                    backgroundColor: ['#0ea5e9', '#0369a1', '#075985'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+                    tooltip: {
+                        callbacks: {
+                            title: (items) => {
+                                let label = items[0].label;
+                                if (label.length > 16) {
+                                    return [label.substring(0, 15), label.substring(15)];
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
-      <div style="margin-top:14px">
-        <strong>Cara kamu perhatian ke Aku</strong>
-        <p class="praise">Aku tu sering mikir, “kok ada ya orang yang perhatian tapi ga lebay, lembut tapi ngena, sederhana tapi kerasa banget?” Itu kamu, Nay. Kamu tuh punya cara sayang yang ga brutal kaya aku, tapi rasanya tetep ada. Cuman ya kadang aku jadi mikir dikit, apakah kamu pengen diperlakukan seperti kamu memperlakukan aku? karena ya kamu liat sendiri aku terlalu banyak yappingnya kalau peerhatian.</p>
-      </div>
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['Logika Argumen', 'Kecepatan Reaksi', 'Durasi Efek', 'Usaha Kognitif', 'Daya Tarik'],
+                datasets: [{
+                    label: 'Rute Sentral',
+                    data: [95, 20, 90, 95, 30],
+                    borderColor: '#0369a1',
+                    backgroundColor: 'rgba(3, 105, 161, 0.2)'
+                }, {
+                    label: 'Rute Periferal',
+                    data: [30, 90, 30, 20, 95],
+                    borderColor: '#ec4899',
+                    backgroundColor: 'rgba(236, 72, 153, 0.2)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: { r: { ticks: { display: false } } },
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } },
+                    tooltip: {
+                        callbacks: {
+                            title: (items) => {
+                                let label = items[0].label;
+                                return label.length > 16 ? [label.substring(0, 16), label.substring(16)] : label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
-      <div style="margin-top:14px">
-        <strong>Interaksi kecil 🤏</strong>
-        <p class="praise">Topik receh, stiker stiker gemay kamu, panggilan aneh… semuanya tu nyambung dan bikin aku nyaman. Bahkan kalau cuma saling godain, aku tetep ngerasa, “oh iya… ini orang yang paling bisa bikin hari aku berwarna.” Apalagi kadang ada disatu hari interaksi kita sedikit kan, jadi interaksi kaya gitu bisa jadi obat anjay, wufyu!!</p>
-      </div>
-    </article>
+        const ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['1980', '1990', '2000', '2010', '2020'],
+                datasets: [{
+                    label: 'Frekuensi Paparan Iklan',
+                    data: [500, 1200, 3000, 5000, 10000],
+                    borderColor: '#ffffff',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (items) => items[0].label
+                        }
+                    }
+                },
+                scales: {
+                    y: { display: false },
+                    x: { ticks: { color: '#ffffff' }, grid: { display: false } }
+                }
+            }
+        });
 
-    <article class="card">
-      <h3 style="margin:0 0 8px 0">Surat cinta mini ❤️</h3>
-      <p class="meta">Untuk dibaca ketika Nayla butuh pelukan hangat lewat kata-kata dari Profesor Ke'is.</p>
-      <blockquote style="margin:12px 0 0 0;padding:12px;border-left:4px solid #ffd7e6;background:linear-gradient(180deg,#fff,#fffaf6);border-radius:8px">
-        "Terima kasih sudah jadi rumah paling tenang di tahun yang chaos ini. Kamu bikin aku tumbuh, bahagia, dan merasa cukup. Aku sayang banget sama kamu, dan aku akan selalu pilih kamu di setiap harinya, setiap cerita, dan setiap versi aku di universe lainnya." — Christ
-      </blockquote>
-    </article>
-
-  </main>
-
-  <footer>
-    <div>Kamu bisa baca ini kapanpun kamu mau ya sayang, i love you! 💌</div>
-    
-    <button class="btn btn-cta" onclick="alert('Love you Nay, kita jalanin hubungan ini bareng bareng ya 💖')">
-        COBA PENCET
-    </button>
-  </footer>
-
-  <script>
-    // small confetti effect (decorative, lightweight)
-    (function(){
-      const confetti = document.querySelector('.confetti');
-      for(let i=0;i<18;i++){
-        const el = document.createElement('div');
-        el.style.position='absolute';
-        el.style.left=(Math.random()*100)+'%';
-        el.style.top=(Math.random()*20)+'vh';
-        el.style.width='8px';el.style.height='12px';el.style.opacity=0.9;
-        el.style.transform='rotate('+Math.floor(Math.random()*360)+'deg)';
-        el.style.borderRadius='2px';
-        el.style.background=['#ffd1e6','#fff2cc','#d6fff0','#ffd7a6'][i%4];
-        el.style.transition='transform 6s linear, top 6s linear';
-        confetti.appendChild(el);
-        setTimeout(()=>{el.style.top='110vh';el.style.transform='translateY(20vh) rotate(720deg)';},100 + i*120);
-      }
-    })();
-  </script>
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: [['Pakar', '(Expertise)'], ['Selebriti', '(Likeability)'], ['Teman', '(Similarity)'], ['Otoritas', '(Authority)']],
+                datasets: [{
+                    label: 'Skor Pengaruh',
+                    data: [85, 70, 75, 90],
+                    backgroundColor: '#0ea5e9'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (items) => {
+                                let label = items[0].label;
+                                if (Array.isArray(label)) return label.join(' ');
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 100 },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
