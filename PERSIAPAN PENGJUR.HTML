@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Summary Pengantar Jurnalistik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .flip-card-front {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .flip-card-back {
+            background-color: #3b82f6;
+            color: #ffffff;
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            overflow-y: auto;
+        }
+
+        .nav-active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-weight: 700;
+            border-right: 4px solid #2563eb;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <!-- Chosen Palette: Slate for neutral backgrounds (#f8fafc, #0f172a), Blue for primary interactive elements (#3b82f6, #2563eb), and Amber for accents/highlights. This creates a clean, academic, yet modern and engaging study environment. -->
+    
+    <!-- Application Structure Plan: The SPA is structured as a 'Study Dashboard' with a sidebar navigation (bottom nav on mobile) and a main content area. This structure was chosen to transform a linear document into an interactive study tool. It includes three main views: 1) Dashboard (Overview & Analytics), 2) Materi Utama (Thematic breakdowns of Week 1-5), and 3) Simulasi Kuis (Interactive Flashcards for the 75 Q&A). This allows users to learn the concepts first, then immediately test themselves in a non-linear, engaging way. -->
+
+    <!-- Visualization & Content Choices: 
+    1. Overall Topic Breakdown -> Goal: Inform -> Viz: Chart.js Doughnut Chart -> Interaction: Hover tooltips -> Justification: Shows the student visually where the bulk of the exam material lies (e.g., Ethics vs. Writing). -> Method: Chart.js in styled container.
+    2. Week 1-5 Summaries -> Goal: Organize -> Viz: Thematic Cards -> Interaction: Scrollable, clear hierarchy -> Justification: Breaks down heavy text into digestible chunks per week. -> Method: HTML/Tailwind CSS.
+    3. 75+ Q&A Predictions -> Goal: Engage & Test -> Viz: Flashcard Grid -> Interaction: Click to flip (reveal answer), live search filtering -> Justification: Active recall (flashcards) is the most effective study method for oral exams. Live search helps find specific concepts quickly. -> Method: Vanilla JS + CSS 3D transforms. 
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="md:w-64 bg-white border-r border-slate-200 flex-shrink-0 z-20 flex flex-col justify-between h-auto md:h-full order-2 md:order-1 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none relative">
+        <div class="p-6 hidden md:block border-b border-slate-100">
+            <h1 class="text-2xl font-extrabold text-blue-600 tracking-tight">PengJur<span class="text-amber-500">Hub</span></h1>
+            <p class="text-xs text-slate-500 mt-1">Master Summary Week 1-5</p>
+        </div>
+        <div class="flex-1 overflow-y-auto hide-scrollbar flex md:flex-col flex-row w-full">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex-1 md:flex-none text-left px-4 md:px-6 py-4 md:py-4 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-3 nav-active">
+                <span class="text-lg md:text-xl">📊</span> <span>Overview</span>
+            </button>
+            <button onclick="switchTab('materi')" id="nav-materi" class="flex-1 md:flex-none text-left px-4 md:px-6 py-4 md:py-4 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-3">
+                <span class="text-lg md:text-xl">📚</span> <span>Materi Utama</span>
+            </button>
+            <button onclick="switchTab('kuis')" id="nav-kuis" class="flex-1 md:flex-none text-left px-4 md:px-6 py-4 md:py-4 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-3 relative">
+                <span class="text-lg md:text-xl">🧠</span> <span>Simulasi Kuis</span>
+                <span class="absolute top-2 right-2 md:relative md:top-0 md:right-0 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">75+</span>
+            </button>
+        </div>
+        <div class="p-6 hidden md:block border-t border-slate-100">
+            <div class="bg-blue-50 rounded-xl p-4 text-center border border-blue-100">
+                <p class="text-sm font-semibold text-blue-800">Semangat Kuis Lisan!</p>
+                <p class="text-xs text-blue-600 mt-1">Tarik nafas, santai, dan jawab pakai logika.</p>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-y-auto bg-slate-50 order-1 md:order-2 h-full scroll-smooth">
+        
+        <section id="view-dashboard" class="p-6 md:p-10 max-w-6xl mx-auto animate-fade-in block">
+            <div class="mb-8">
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Selamat Datang di PengJur Hub 👋</h2>
+                <p class="text-slate-600 leading-relaxed text-lg">
+                    Bagian ini adalah <strong>pusat kontrol belajarmu</strong>. Di sini kamu bisa melihat ringkasan visual mengenai bobot materi yang akan diujikan dalam kuis lisan Pengantar Jurnalistik. Grafik di bawah ini memetakan persebaran 75 pertanyaan berdasarkan topik utamanya, membantumu menentukan fokus belajar. Jelajahi aplikasi ini untuk membaca materi lengkap dan melatih daya ingatmu.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <span>📈</span> Peta Persebaran Soal Kuis
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-6">Visualisasi proporsi 75 pertanyaan prediksi berdasarkan kategori materi dari Week 1 hingga Week 5.</p>
+                    <div class="chart-container">
+                        <canvas id="topicChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-2xl shadow-md text-white">
+                        <h3 class="text-xl font-bold mb-2">Cara Pakai Aplikasi Ini</h3>
+                        <ul class="space-y-3 mt-4 text-blue-50">
+                            <li class="flex items-start gap-3">
+                                <span class="bg-white/20 p-1 rounded text-sm">&#10112;</span>
+                                <span>Buka tab <strong>Materi Utama</strong> untuk membaca inti sari dari materi Week 1 sampai Week 5 dengan bahasa yang sangat santai.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-white/20 p-1 rounded text-sm">&#10113;</span>
+                                <span>Pindah ke tab <strong>Simulasi Kuis</strong> untuk melatih hapalanmu menggunakan Flashcard interaktif.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-white/20 p-1 rounded text-sm">&#10114;</span>
+                                <span>Gunakan fitur <strong>Pencarian</strong> di bagian kuis untuk mencari istilah spesifik (misal: "Watchdog" atau "Libel").</span>
+                            </li>
+                        </ul>
+                        <button onclick="switchTab('materi')" class="mt-6 w-full bg-white text-blue-700 font-bold py-3 rounded-xl hover:bg-blue-50 transition-colors shadow-sm">
+                            Mulai Belajar Sekarang &#10142;
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+                            <span class="text-3xl mb-2">📚</span>
+                            <span class="text-2xl font-black text-slate-800">5</span>
+                            <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Minggu Materi</span>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+                            <span class="text-3xl mb-2">🔥</span>
+                            <span class="text-2xl font-black text-slate-800">75+</span>
+                            <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Soal Prediksi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-materi" class="p-6 md:p-10 max-w-5xl mx-auto animate-fade-in hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Inti Sari Materi (Week 1 - 5) 📚</h2>
+                <p class="text-slate-600 leading-relaxed text-lg">
+                    Bagian ini berisi <strong>catatan super ringkas dan santai</strong> yang merangkum poin-poin krusial dari presentasi dosen. Materi disusun per minggu agar kamu mudah memahami alur logikanya, mulai dari apa itu jurnalisme hingga bagaimana cara melakukan wawancara yang benar. Baca pelan-pelan dan pahami maknanya, bukan sekadar dihafal.
+                </p>
+            </div>
+
+            <div class="space-y-6" id="materi-container">
+            </div>
+        </section>
+
+        <section id="view-kuis" class="p-6 md:p-10 max-w-6xl mx-auto animate-fade-in hidden h-full flex flex-col">
+            <div class="mb-6 flex-shrink-0">
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Simulasi Kuis Lisan 🧠</h2>
+                <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                    Bagian ini adalah <strong>arena latihanmu</strong>. Semua prediksi pertanyaan kuis lisan diubah menjadi kartu pintar (Flashcard). Baca pertanyaannya, coba jawab sendiri di dalam hati, lalu <strong>klik kartu tersebut</strong> untuk melihat kunci jawaban yang benar dan santai. Gunakan kotak pencarian untuk mencari topik tertentu.
+                </p>
+                
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-xl">&#8981;</span>
+                    <input type="text" id="searchInput" placeholder="Cari pertanyaan atau istilah (contoh: Objektivitas, Nilai Berita)..." class="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all text-slate-700 font-medium shadow-sm outline-none">
+                </div>
+                
+                <div class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar pb-2" id="filter-container">
+                    <button class="filter-btn active bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shadow-sm" onclick="filterCategory('Semua', this)">Semua Topik</button>
+                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Dasar Jurnalisme', this)">Dasar Jurnalisme</button>
+                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Etika & Hukum Pers', this)">Etika & Hukum Pers</button>
+                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Nilai Berita & Proses', this)">Nilai Berita & Proses</button>
+                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Teknik Menulis', this)">Teknik Menulis</button>
+                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Sumber & Wawancara', this)">Sumber & Wawancara</button>
+                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Masa Depan & Lain-lain', this)">Masa Depan & Lain-lain</button>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto pr-2 pb-20 md:pb-0">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="flashcard-container">
+                </div>
+                <div id="no-results" class="hidden text-center py-12">
+                    <span class="text-4xl">🕵️‍♀️</span>
+                    <h3 class="text-xl font-bold text-slate-700 mt-4">Pencarian tidak ditemukan</h3>
+                    <p class="text-slate-500 mt-2">Coba gunakan kata kunci lain.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const notesData = [
+            {
+                week: "WEEK 1: INTRODUCTION & TRANSFORMASI JURNALISME",
+                icon: "📅",
+                color: "blue",
+                core: "Jurnalisme itu bukan cuma soal nulis, tapi soal proses mencari kebenaran buat orang banyak.",
+                points: [
+                    "<strong>Definisi Jurnalisme:</strong> Proses ngumpulin, nganalisis, verifikasi (cek fakta), dan nyajiin info penting lewat media.",
+                    "<strong>Fungsi Jurnalisme:</strong><br>• <em>Watchdog</em> (Anjing Penjaga): Ngawasin pemerintah biar nggak korupsi/semena-mena.<br>• Pemberi Info: Biar warga tahu kejadian sekitar.<br>• Pendidikan: Ngasih konteks biar orang paham masalah rumit.",
+                    "<strong>Era Baru (Konvergensi):</strong> Jurnalis nggak cuma nulis di koran. Satu jurnalis harus bisa nulis, foto, dan bikin video sekaligus (Multi-skilling).",
+                    "<strong>Konsumsi Berita:</strong> Orang sekarang lebih suka baca berita lewat HP (mobile-first) dan sosmed daripada koran."
+                ]
+            },
+            {
+                week: "WEEK 2: ETIKA, HUKUM PERS, & KREDIBILITAS",
+                icon: "⚖️",
+                color: "amber",
+                core: "Jurnalis punya 'pagar' biar nggak ngasal ngomong dan nggak ngerugiin orang.",
+                points: [
+                    "<strong>Kredibilitas:</strong> 'Mata uang'-nya jurnalis. Sekali bohong, orang nggak bakal percaya lagi.",
+                    "<strong>UU Pers No. 40 Tahun 1999:</strong> Menjamin kebebasan pers tapi tetap menuntut tanggung jawab.",
+                    "<strong>Pencemaran Nama Baik:</strong><br>• Libel: Fitnah tertulis yang merusak reputasi.<br>• Slander: Fitnah lisan (omongan).",
+                    "<strong>Privasi:</strong> Jurnalis dilarang <em>Trespassing</em> (masuk rumah tanpa izin) atau nyebarin rahasia pribadi yang bukan untuk publik.",
+                    "<strong>Hak Cipta:</strong> Dilarang asal copas. Ada <em>Fair Use</em> (penggunaan wajar) asal sebut sumber untuk review/berita."
+                ]
+            },
+            {
+                week: "WEEK 3: WHAT IS NEWS? (NILAI BERITA)",
+                icon: "🧐",
+                color: "emerald",
+                core: "Nggak semua info itu berita. Berita harus punya 'Nilai'.",
+                points: [
+                    "<strong>News Value (Nilai Berita):</strong><br>• Prominence: Tokoh terkenal/Pejabat.<br>• Impact: Dampak ke banyak orang.<br>• Proximity: Kedekatan geografis/emosional.<br>• Timeliness: Kebaruan (Aktual).<br>• Unusualness: Keunikan/Aneh.",
+                    "<strong>Proses 3C:</strong><br>1. Collect: Cari data (observasi, wawancara).<br>2. Construct: Susun cerita pakai rumus 5W+1H.<br>3. Correct: Cek fakta, ejaan, data sebelum tayang."
+                ]
+            },
+            {
+                week: "WEEK 4: TEKNIK MENULIS BERITA",
+                icon: "✍️",
+                color: "purple",
+                core: "Menulis berita itu harus to-the-point dan nggak bertele-tele.",
+                points: [
+                    "<strong>Fokus:</strong> Satu berita = satu pesan utama. Jangan melebar.",
+                    "<strong>Struktur Piramida Terbalik:</strong><br>• Lead (Atas): Info paling penting (5W+1H).<br>• Body (Tengah): Penjelasan detail.<br>• Tail (Bawah): Info tambahan, aman jika dipotong.",
+                    "<strong>Jenis Lead:</strong><br>• Summary Lead: Merangkum langsung (untuk Hard News).<br>• Feature Lead: Bercerita/deskriptif (untuk Soft News)."
+                ]
+            },
+            {
+                week: "WEEK 5: SUMBER & TEKNIK WAWANCARA",
+                icon: "🎤",
+                color: "rose",
+                core: "Jurnalis nggak boleh 'halu'. Semua info harus ada sumbernya.",
+                points: [
+                    "<strong>Jenis Sumber:</strong> Manusia (wawancara), Dokumen, dan Observasi.",
+                    "<strong>Aturan Main:</strong><br>• On the Record: Boleh dikutip, nama disebut.<br>• Off the Record: Boleh didengar, HARAM tayang.<br>• On Background: Boleh dikutip, nama disamarkan (Anonimitas dengan syarat ketat).",
+                    "<strong>Tantangan Wawancara:</strong> Jangan telan mentah-mentah jawaban narasumber. Gunakan <em>The Dumb Factor</em> (pura-pura polos) untuk dapat jawaban jelas."
+                ]
+            }
+        ];
+
+        const qaDataRaw = [
+            { c: "Dasar Jurnalisme", q: "Apa sih jurnalisme itu sebenarnya?", a: "Gampangnya, jurnalisme itu kerjaan nyari info beneran, dicek lagi, terus dikasih tahu ke orang banyak lewat media." },
+            { c: "Dasar Jurnalisme", q: "Apa fungsi utama jurnalisme bagi masyarakat?", a: "Biar masyarakat tahu apa yang terjadi (info), paham masalahnya (edukasi), dan ada yang jagain biar pemerintah nggak semena-mena (watchdog)." },
+            { c: "Dasar Jurnalisme", q: "Apa yang dimaksud dengan fungsi 'Watchdog'?", a: "Jurnalis itu kayak anjing penjaga. Kita ngegonggong kalau liat ada pejabat yang korupsi atau salah aturan." },
+            { c: "Dasar Jurnalisme", q: "Kenapa jurnalisme disebut pilar keempat demokrasi?", a: "Karena kalau eksekutif, legislatif, dan yudikatif bermasalah, jurnalisme lah yang ngasih tau rakyat biar rakyat bisa protes." },
+            { c: "Dasar Jurnalisme", q: "Apa perbedaan jurnalisme dulu sama sekarang?", a: "Dulu cuma koran/TV. Sekarang sudah konvergensi, jurnalis harus bisa main di semua platform (web, sosmed, podcast)." },
+            { c: "Dasar Jurnalisme", q: "Apa itu konvergensi media?", a: "Penggabungan berbagai jenis media. Jadi satu kantor berita punya web, TV, dan radio yang saling kerja sama." },
+            { c: "Dasar Jurnalisme", q: "Apa tantangan terbesar jurnalisme di era digital?", a: "Melawan hoaks dan algoritma sosmed yang bikin orang cuma baca apa yang mereka suka aja (echo chamber)." },
+            { c: "Dasar Jurnalisme", q: "Apa itu Citizen Journalism?", a: "Warga biasa yang ngelaporin kejadian (kayak post kecelakaan di Twitter), tapi mereka nggak terikat kode etik jurnalis profesional." },
+            { c: "Dasar Jurnalisme", q: "Apakah konten kreator itu jurnalis?", a: "Belum tentu. Jurnalis wajib terikat kode etik dan disiplin verifikasi, sedangkan konten kreator lebih ke hiburan atau opini pribadi." },
+            { c: "Dasar Jurnalisme", q: "Apa itu jurnalisme multiplatform?", a: "Jurnalis yang satu kontennya bisa disebarin ke TikTok, web, dan YouTube sekaligus." },
+            
+            { c: "Etika & Hukum Pers", q: "Kenapa kredibilitas itu penting buat jurnalis?", a: "Karena kalau orang nggak percaya lagi, berita secanggih apapun nggak bakal didenger. Jurnalis jualan kepercayaan." },
+            { c: "Etika & Hukum Pers", q: "Apa itu UU Pers No. 40 Tahun 1999?", a: "Aturan hukum di Indonesia yang ngejaga biar pers kita bebas tapi tetap bertanggung jawab." },
+            { c: "Etika & Hukum Pers", q: "Apa bedanya Libel sama Slander?", a: "Libel itu fitnah lewat tulisan/gambar, Slander itu fitnah lewat omongan." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Kode Etik Jurnalistik (KEJ)?", a: "Kumpulan aturan perilaku jurnalis (kayak nggak boleh terima suap, harus cek fakta, dsb)." },
+            { c: "Etika & Hukum Pers", q: "Bolehkah jurnalis nerima amplop/uang dari narasumber?", a: "Nggak boleh! Itu namanya gratifikasi dan bisa bikin berita kita nggak netral." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Hak Tolak?", a: "Hak jurnalis buat nggak ngasih tau siapa sumber rahasianya di depan pengadilan sekalipun." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Hak Jawab?", a: "Hak orang yang diberitain salah buat minta media itu nulis pembetulannya." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Hak Koreksi?", a: "Kewajiban media buat benerin berita kalau emang ada yang salah." },
+            { c: "Etika & Hukum Pers", q: "Apa itu pelanggaran privasi dalam jurnalisme?", a: "Nyebarin info pribadi yang nggak ada urusannya sama kepentingan umum (misal: penyakit rahasia seseorang yang nggak nular)." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Trespassing?", a: "Masuk ke properti pribadi orang tanpa izin demi dapet berita. Ini ilegal." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Intrusi?", a: "Ngintip atau pake alat sadap/drone buat dapet info pribadi orang." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Misappropriation?", a: "Pake foto orang buat iklan atau kepentingan lain tanpa izin dia." },
+            { c: "Etika & Hukum Pers", q: "Apa itu Fair Use dalam hak cipta?", a: "Boleh pake karya orang dikit buat review atau berita, asal nggak ngerugiin pemilik aslinya." },
+            { c: "Etika & Hukum Pers", q: "Siapa yang ngawasin pers di Indonesia?", a: "Dewan Pers." },
+            { c: "Etika & Hukum Pers", q: "Apa hukuman kalau jurnalis ngelanggar kode etik?", a: "Bisa ditegur Dewan Pers, medianya diminta minta maaf, atau jurnalisnya dipecat perusahaan." },
+
+            { c: "Nilai Berita & Proses", q: "Kenapa informasi belum tentu jadi berita?", a: "Karena nggak semua info punya 'nilai'. 'Saya makan siang' itu info. 'Presiden makan siang di warteg' itu berita karena ada nilai tokoh (prominence)." },
+            { c: "Nilai Berita & Proses", q: "Apa itu nilai 'Proximity'?", a: "Kedekatan. Berita tetangga kamu kemalingan lebih menarik buat kamu daripada berita maling di negara lain." },
+            { c: "Nilai Berita & Proses", q: "Apa itu nilai 'Impact'?", a: "Dampak. Harga BBM naik itu berita besar karena semua orang ngerasain dampaknya." },
+            { c: "Nilai Berita & Proses", q: "Apa itu nilai 'Timeliness'?", a: "Kebaruan. Berita kejadian tadi pagi lebih laku daripada kejadian minggu lalu." },
+            { c: "Nilai Berita & Proses", q: "Apa itu 'Conflict' sebagai nilai berita?", a: "Berantem atau perdebatan itu menarik buat dibaca (misal: debat capres)." },
+            { c: "Nilai Berita & Proses", q: "Jelaskan tahap 'Collect' dalam 3C!", a: "Tahap nyari bahan. Bisa lewat nanya orang, liat data di internet, atau datang langsung ke lokasi." },
+            { c: "Nilai Berita & Proses", q: "Jelaskan tahap 'Construct' dalam 3C!", a: "Tahap nulis. Nyusun bahan-bahan tadi jadi cerita yang enak dibaca pake rumus 5W+1H." },
+            { c: "Nilai Berita & Proses", q: "Jelaskan tahap 'Correct' dalam 3C!", a: "Tahap editing. Cek lagi ada yang typo nggak? Namanya bener nggak? Datanya salah nggak?" },
+            { c: "Nilai Berita & Proses", q: "Apa bedanya Hard News sama Soft News?", a: "Hard News itu berita penting yang harus cepet tayang (politik/bencana). Soft News itu berita santai yang menghibur (lifestyle/wisata)." },
+            { c: "Nilai Berita & Proses", q: "Apa itu Investigative Journalism?", a: "Jurnalisme yang kerjanya kayak detektif buat bongkar rahasia yang ditutup-tutupi orang jahat." },
+
+            { c: "Teknik Menulis", q: "Apa itu Lead atau Teras Berita?", a: "Paragraf pertama berita. Isinya harus yang paling penting." },
+            { c: "Teknik Menulis", q: "Kenapa pake rumus Piramida Terbalik?", a: "Biar orang yang cuma punya waktu dikit bisa langsung tau intinya di awal." },
+            { c: "Teknik Menulis", q: "Sebutkan elemen 5W+1H!", a: "Who (Siapa), What (Apa), When (Kapan), Where (Di mana), Why (Kenapa), How (Bagaimana)." },
+            { c: "Teknik Menulis", q: "Apa itu 'So What' factor dalam berita?", a: "Alasan kenapa pembaca harus peduli sama berita itu. Apa untung/ruginya buat mereka?" },
+            { c: "Teknik Menulis", q: "Apa itu Summary Lead?", a: "Lead yang langsung ngerangkum jawaban 5W+1H dalam satu paragraf." },
+            { c: "Teknik Menulis", q: "Apa itu Feature Lead?", a: "Lead yang gayanya bercerita, biasanya pake penggambaran suasana biar pembaca tertarik." },
+            { c: "Teknik Menulis", q: "Apa yang dimaksud dengan 'Focus' dalam menulis berita?", a: "Inti utama cerita. Kalau bahas kecelakaan, fokusnya di korban, jangan tiba-tiba bahas harga mobilnya." },
+            { c: "Teknik Menulis", q: "Apa itu 'Nut Graph'?", a: "Paragraf yang ngejelasin inti berita kalau lead-nya bertipe feature/bercerita." },
+            { c: "Teknik Menulis", q: "Kenapa jurnalis nggak boleh pake kata sifat yang subyektif?", a: "Karena jurnalis harus netral. Jangan tulis 'pemandangan indah', tulis aja deskripsinya biar pembaca yang nilai indah atau nggak." },
+            { c: "Teknik Menulis", q: "Apa itu Attribution (Atribusi)?", a: "Nyebutin sumber info. Misal: 'Kata polisi...', 'Menurut data BPS...'. Ini wajib biar nggak dikira ngarang." },
+
+            { c: "Sumber & Wawancara", q: "Apa bedanya sumber primer dan sekunder?", a: "Primer itu yang ngalamin langsung. Sekunder itu yang cuma denger atau baca dari orang lain." },
+            { c: "Sumber & Wawancara", q: "Apa itu wawancara cegat (Doorstop)?", a: "Wawancara langsung di tempat pas narasumber lagi lewat atau keluar ruangan." },
+            { c: "Sumber & Wawancara", q: "Apa itu Off the Record?", a: "Info yang nggak boleh kita tulis atau sebut namanya sama sekali." },
+            { c: "Sumber & Wawancara", q: "Kenapa jurnalis dilarang pake sumber anonim secara sembarangan?", a: "Karena bisa ngurangin kepercayaan pembaca. Orang bakal mikir 'Jangan-jangan jurnalisnya ngarang'." },
+            { c: "Sumber & Wawancara", q: "Apa syarat boleh pake sumber anonim?", a: "Kalau infonya beneran penting dan sumbernya bisa terancam nyawanya/kerjaannya kalau namanya disebut." },
+            { c: "Sumber & Wawancara", q: "Apa itu 'The Dumb Factor' dalam wawancara?", a: "Jurnalis pura-pura nggak tau atau nanya hal simpel biar dapet jawaban yang jelas dan gampang dipahami rakyat." },
+            { c: "Sumber & Wawancara", q: "Bagaimana cara ngadepin narasumber yang jawabannya 'No Comment'?", a: "Coba tanya dari sisi lain, atau tunjukin data yang kita punya biar dia mau ngerespon." },
+            { c: "Sumber & Wawancara", q: "Apa itu transkrip wawancara?", a: "Salinan ketikan dari hasil rekaman wawancara." },
+            { c: "Sumber & Wawancara", q: "Bolehkah jurnalis mengubah kutipan narasumber?", a: "Nggak boleh ngubah maknanya. Kalau cuma ngerapiin 'eh', 'anu', 'anu' itu boleh biar enak dibaca." },
+            { c: "Sumber & Wawancara", q: "Apa itu siaran pers (Press Release)?", a: "Info tertulis dari perusahaan/instansi yang dikirim ke jurnalis buat dijadiin berita." },
+
+            { c: "Masa Depan & Lain-lain", q: "Apa itu Jurnalisme Data?", a: "Berita yang dibikin berdasarkan olahan data angka-angka yang rumit terus dibikin grafik biar gampang dibaca." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu Fake News?", a: "Info bohong yang sengaja dibikin buat nipu orang." },
+            { c: "Masa Depan & Lain-lain", q: "Apa peran AI dalam jurnalisme masa depan?", a: "Bisa bantu ngetik cepat atau olah data, tapi AI nggak punya nurani dan etika kayak jurnalis manusia." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu Hybrid Newsroom?", a: "Kantor berita yang jurnalisnya ada yang kerja di kantor, ada yang di lapangan, semua terhubung lewat internet." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu literasi digital?", a: "Kemampuan masyarakat buat ngebedain mana berita bener mana berita hoaks." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu independensi jurnalis?", a: "Jurnalis nggak boleh dipihak mana pun. Nggak boleh bela bosnya, nggak boleh bela partai." },
+            { c: "Masa Depan & Lain-lain", q: "Apa arti 'Objektivitas'?", a: "Nyajiin fakta apa adanya tanpa ditambah-tambahin opini pribadi." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu disiplin verifikasi?", a: "Budaya cek dan ricek. Jangan langsung percaya satu sumber." },
+            { c: "Masa Depan & Lain-lain", q: "Apa yang dimaksud dengan jurnalisme kuning (Yellow Journalism)?", a: "Jurnalisme yang cuma ngejar sensasi dan judul yang bombastis tapi isinya nol." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu Clickbait?", a: "Judul yang bikin penasaran tapi seringkali nipu atau nggak sesuai isi demi dapet klik." },
+            { c: "Masa Depan & Lain-lain", q: "Kenapa verifikasi itu 'nyawa' jurnalisme?", a: "Karena tanpa verifikasi, jurnalisme nggak ada bedanya sama gosip di grup WA keluarga." },
+            { c: "Masa Depan & Lain-lain", q: "Apa bedanya narasumber ahli dan narasumber saksi?", a: "Ahli itu yang punya ilmu (Dosen/Dokter), saksi itu yang liat kejadian." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu backgrounder?", a: "Info tambahan soal latar belakang suatu kejadian biar pembaca nggak bingung." },
+            { c: "Masa Depan & Lain-lain", q: "Apa arti jurnalisme advokasi?", a: "Jurnalisme yang secara terang-terangan membela kelompok tertentu (misal: kaum tertindas)." },
+            { c: "Masa Depan & Lain-lain", q: "Bolehkah jurnalis kampanye buat paslon tertentu?", a: "Secara kode etik, jurnalis harus mundur atau non-aktif kalau mau kampanye biar nggak bias." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu pers mahasiswa?", a: "Media yang dikelola mahasiswa di kampus, fungsinya latihan jadi jurnalis beneran." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu Dewan Pers?", a: "Lembaga independen yang jaga kemerdekaan pers dan nyelesein sengketa antara publik dan media." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu Komisi Penyiaran Indonesia (KPI)?", a: "Lembaga yang ngawasin isi siaran di TV dan Radio (bukan web)." },
+            { c: "Masa Depan & Lain-lain", q: "Apa itu jurnalisme damai?", a: "Jurnalisme yang fokus nyari solusi pas ada konflik, bukan malah manas-manasin suasana." },
+            { c: "Masa Depan & Lain-lain", q: "Apa pesan terakhir buat jurnalis masa depan?", a: "Selalu utamakan kepentingan publik dan jangan pernah berhenti verifikasi!" }
+        ];
+
+        let currentActiveCategory = "Semua";
+        let qaDataFiltered = [...qaDataRaw];
+
+        function initApp() {
+            renderNotes();
+            renderFlashcards(qaDataRaw);
+            initChart();
+            
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                filterData(query, currentActiveCategory);
+            });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('main > section').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            const activeSection = document.getElementById(`view-${tabId}`);
+            activeSection.classList.remove('hidden');
+            activeSection.classList.add('animate-fade-in');
+
+            document.querySelectorAll('nav button').forEach(el => {
+                el.classList.remove('nav-active', 'bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
+                el.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            activeBtn.classList.remove('text-slate-600');
+            activeBtn.classList.add('nav-active', 'bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
+            
+            window.scrollTo(0, 0);
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('materi-container');
+            container.innerHTML = '';
+            
+            notesData.forEach(note => {
+                const bgColors = {
+                    'blue': 'bg-blue-50 border-blue-200 text-blue-800',
+                    'amber': 'bg-amber-50 border-amber-200 text-amber-800',
+                    'emerald': 'bg-emerald-50 border-emerald-200 text-emerald-800',
+                    'purple': 'bg-purple-50 border-purple-200 text-purple-800',
+                    'rose': 'bg-rose-50 border-rose-200 text-rose-800'
+                };
+                
+                const headerColor = bgColors[note.color];
+                
+                let pointsHtml = note.points.map(p => `<li class="flex items-start gap-3"><span class="text-blue-500 mt-1">&#10004;</span><span>${p}</span></li>`).join('');
+
+                const html = `
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6 hover:shadow-md transition-shadow">
+                        <div class="p-6 ${headerColor} border-b flex items-center gap-4">
+                            <span class="text-4xl bg-white p-2 rounded-xl shadow-sm">${note.icon}</span>
+                            <div>
+                                <h3 class="font-extrabold text-xl">${note.week}</h3>
+                                <p class="text-sm opacity-90 font-medium mt-1">Intinya: ${note.core}</p>
+                            </div>
+                        </div>
+                        <div class="p-6 md:p-8">
+                            <ul class="space-y-4 text-slate-700 leading-relaxed">
+                                ${pointsHtml}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function filterCategory(category, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50";
+            });
+            btnElement.className = "filter-btn active bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shadow-sm";
+            
+            currentActiveCategory = category;
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            filterData(query, category);
+        }
+
+        function filterData(query, category) {
+            qaDataFiltered = qaDataRaw.filter(item => {
+                const matchesQuery = item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query) || item.c.toLowerCase().includes(query);
+                const matchesCategory = category === "Semua" || item.c === category;
+                return matchesQuery && matchesCategory;
+            });
+            renderFlashcards(qaDataFiltered);
+        }
+
+        function renderFlashcards(data) {
+            const container = document.getElementById('flashcard-container');
+            const noResults = document.getElementById('no-results');
+            container.innerHTML = '';
+            
+            if (data.length === 0) {
+                container.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                container.classList.remove('hidden');
+                noResults.classList.add('hidden');
+            }
+
+            data.forEach((item, index) => {
+                const cardHtml = `
+                    <div class="flip-card h-64 w-full" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <span class="absolute top-4 left-4 text-xs font-bold px-2 py-1 bg-slate-100 text-slate-600 rounded-md">${item.c}</span>
+                                <span class="absolute top-4 right-4 text-slate-300 text-2xl">?</span>
+                                <p class="text-lg font-bold text-center text-slate-800 mt-4 leading-snug">${item.q}</p>
+                                <p class="absolute bottom-4 left-0 right-0 text-center text-xs text-slate-400 font-semibold uppercase tracking-wider">Tap untuk jawaban</p>
+                            </div>
+                            <div class="flip-card-back hide-scrollbar">
+                                <span class="block text-sm font-bold text-blue-200 mb-2 border-b border-blue-400/30 pb-2">Jawaban:</span>
+                                <p class="text-base font-medium leading-relaxed">${item.a}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('topicChart').getContext('2d');
+            
+            const categoryCounts = {};
+            qaDataRaw.forEach(item => {
+                categoryCounts[item.c] = (categoryCounts[item.c] || 0) + 1;
+            });
+
+            const labels = Object.keys(categoryCounts);
+            const data = Object.values(categoryCounts);
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#3b82f6', 
+                            '#f59e0b', 
+                            '#10b981', 
+                            '#8b5cf6', 
+                            '#f43f5e', 
+                            '#64748b'  
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    family: "'Plus Jakarta Sans', sans-serif",
+                                    size: 11,
+                                    weight: '600'
+                                },
+                                color: '#475569',
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { size: 13, family: "'Plus Jakarta Sans', sans-serif" },
+                            bodyFont: { size: 14, family: "'Plus Jakarta Sans', sans-serif", weight: 'bold' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.raw} Pertanyaan`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%',
+                    layout: {
+                        padding: 10
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
