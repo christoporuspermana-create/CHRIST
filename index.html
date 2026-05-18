@@ -1,590 +1,1161 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Summary Pengantar Jurnalistik</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Public Speaking For Communication Students</title>
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 350px;
-        }
+<style>
 
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
-        }
+:root{
+    --navy:#071739;
+    --blue:#4BA3FF;
+    --light:#F4F8FF;
+    --orange:#FF9F43;
+    --white:#ffffff;
+    --glass:rgba(255,255,255,0.12);
+    --shadow:0 10px 30px rgba(0,0,0,0.15);
+}
 
-        .flip-card {
-            perspective: 1000px;
-            cursor: pointer;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
+html{
+    scroll-behavior:smooth;
+}
 
-        .flip-card.flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
+body{
+    background:linear-gradient(135deg,#071739,#0d2f6b,#4BA3FF);
+    color:white;
+    overflow-x:hidden;
+    position:relative;
+}
 
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+/* ===== Animated Background ===== */
 
-        .flip-card-front {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        }
+.blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:0.35;
+    z-index:-1;
+    animation:floatBlob 12s infinite ease-in-out;
+}
 
-        .flip-card-back {
-            background-color: #3b82f6;
-            color: #ffffff;
-            transform: rotateY(180deg);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            overflow-y: auto;
-        }
+.blob1{
+    width:300px;
+    height:300px;
+    background:#4BA3FF;
+    top:-100px;
+    left:-80px;
+}
 
-        .nav-active {
-            background-color: #eff6ff;
-            color: #2563eb;
-            font-weight: 700;
-            border-right: 4px solid #2563eb;
-        }
+.blob2{
+    width:250px;
+    height:250px;
+    background:#FF9F43;
+    bottom:-80px;
+    right:-80px;
+    animation-delay:3s;
+}
 
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        .animate-fade-in {
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+@keyframes floatBlob{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(40px);}
+    100%{transform:translateY(0px);}
+}
+
+/* ===== Floating Emojis ===== */
+
+.emoji{
+    position:fixed;
+    font-size:28px;
+    animation:floatEmoji linear infinite;
+    opacity:0.4;
+    z-index:-1;
+}
+
+@keyframes floatEmoji{
+    from{
+        transform:translateY(100vh) rotate(0deg);
+    }
+    to{
+        transform:translateY(-120vh) rotate(360deg);
+    }
+}
+
+/* ===== Loading ===== */
+
+#loadingScreen{
+    position:fixed;
+    width:100%;
+    height:100vh;
+    background:#071739;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.loader{
+    width:90px;
+    height:90px;
+    border:8px solid rgba(255,255,255,0.2);
+    border-top:8px solid #FF9F43;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin-bottom:25px;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+.loading-title{
+    font-size:2rem;
+    font-weight:700;
+    animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.05);}
+    100%{transform:scale(1);}
+}
+
+/* ===== Main Layout ===== */
+
+section{
+    min-height:100vh;
+    padding:90px 8%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    position:relative;
+}
+
+.glass{
+    background:var(--glass);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+}
+
+.title{
+    font-size:3rem;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    max-width:800px;
+    text-align:center;
+    opacity:0.9;
+    line-height:1.8;
+}
+
+/* ===== Buttons ===== */
+
+.btn{
+    padding:16px 34px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#FF9F43,#ffb55c);
+    color:white;
+    font-size:1rem;
+    font-weight:600;
+    margin-top:25px;
+    transition:0.3s;
+    box-shadow:0 0 20px rgba(255,159,67,0.4);
+}
+
+.btn:hover{
+    transform:translateY(-5px) scale(1.03);
+    box-shadow:0 0 30px rgba(255,159,67,0.8);
+}
+
+.btn:active{
+    transform:scale(0.95);
+}
+
+.pulse-btn{
+    animation:pulseButton 2s infinite;
+}
+
+@keyframes pulseButton{
+    0%{
+        box-shadow:0 0 0 0 rgba(255,159,67,0.7);
+    }
+    70%{
+        box-shadow:0 0 0 18px rgba(255,159,67,0);
+    }
+    100%{
+        box-shadow:0 0 0 0 rgba(255,159,67,0);
+    }
+}
+
+/* ===== Hero ===== */
+
+.hero{
+    text-align:center;
+}
+
+.hero h1{
+    font-size:4rem;
+    margin-bottom:20px;
+    line-height:1.2;
+}
+
+.hero span{
+    color:#FF9F43;
+}
+
+.hero-illustration{
+    font-size:110px;
+    margin:35px 0;
+    animation:floating 3s infinite ease-in-out;
+}
+
+@keyframes floating{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-20px);}
+    100%{transform:translateY(0px);}
+}
+
+.typing{
+    border-right:3px solid white;
+    white-space:nowrap;
+    overflow:hidden;
+    width:0;
+    animation:typing 4s steps(40,end) forwards,
+    blink 0.8s infinite;
+}
+
+@keyframes typing{
+    from{width:0}
+    to{width:100%}
+}
+
+@keyframes blink{
+    50%{border-color:transparent;}
+}
+
+/* ===== Progress Bar ===== */
+
+.progress-container{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:10px;
+    background:rgba(255,255,255,0.15);
+    z-index:999;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#FF9F43,#4BA3FF);
+    transition:0.3s;
+}
+
+/* ===== Problem Cards ===== */
+
+.card-grid{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:25px;
+    margin-top:50px;
+}
+
+.problem-card{
+    padding:30px;
+    transition:0.4s;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.problem-card:hover{
+    transform:translateY(-10px) rotate(-1deg);
+}
+
+.problem-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,transparent,rgba(255,255,255,0.08));
+}
+
+.problem-card h3{
+    margin-top:15px;
+    margin-bottom:10px;
+}
+
+.problem-icon{
+    font-size:45px;
+}
+
+/* ===== Popup ===== */
+
+.popup{
+    position:fixed;
+    top:30px;
+    right:30px;
+    background:white;
+    color:#071739;
+    padding:18px 24px;
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    transform:translateX(120%);
+    transition:0.4s;
+    z-index:9999;
+    font-weight:600;
+}
+
+.popup.show{
+    transform:translateX(0);
+}
+
+/* ===== Material Slider ===== */
+
+.material-container{
+    max-width:1000px;
+    width:100%;
+    margin-top:40px;
+}
+
+.material-card{
+    display:none;
+    padding:40px;
+}
+
+.material-card.active{
+    display:block;
+    animation:fadeSlide 0.5s;
+}
+
+@keyframes fadeSlide{
+    from{
+        opacity:0;
+        transform:translateX(50px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+.material-icon{
+    font-size:70px;
+    margin-bottom:20px;
+}
+
+.nav-buttons{
+    display:flex;
+    gap:20px;
+    margin-top:30px;
+}
+
+/* ===== Quiz ===== */
+
+.quiz-box{
+    width:100%;
+    max-width:850px;
+    padding:40px;
+    margin-top:40px;
+}
+
+.question{
+    margin-bottom:30px;
+}
+
+.option{
+    padding:18px;
+    margin:12px 0;
+    border-radius:18px;
+    background:rgba(255,255,255,0.08);
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.option:hover{
+    background:rgba(255,255,255,0.18);
+    transform:translateX(8px);
+}
+
+.correct{
+    background:#28c76f !important;
+}
+
+.wrong{
+    background:#ea5455 !important;
+}
+
+.score{
+    margin-top:20px;
+    font-size:1.2rem;
+    font-weight:700;
+    color:#FFDE59;
+}
+
+/* ===== Mini Game ===== */
+
+.challenge-container{
+    width:100%;
+    max-width:1000px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+    margin-top:50px;
+}
+
+.draggable{
+    padding:18px 26px;
+    border-radius:16px;
+    cursor:grab;
+    user-select:none;
+}
+
+.dropzone{
+    width:260px;
+    height:100px;
+    border:3px dashed rgba(255,255,255,0.4);
+    border-radius:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:10px;
+}
+
+.dropzone.hovered{
+    background:rgba(255,255,255,0.1);
+}
+
+/* ===== Tips ===== */
+
+.carousel{
+    width:100%;
+    max-width:900px;
+    overflow:hidden;
+    position:relative;
+    margin-top:40px;
+}
+
+.tip-track{
+    display:flex;
+    transition:0.5s;
+}
+
+.tip-card{
+    min-width:100%;
+    padding:40px;
+}
+
+.carousel-controls{
+    margin-top:20px;
+    display:flex;
+    gap:15px;
+}
+
+/* ===== Summary ===== */
+
+.summary-grid{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+    margin-top:40px;
+}
+
+.summary-card{
+    padding:30px;
+    text-align:center;
+    transition:0.4s;
+}
+
+.summary-card:hover{
+    transform:translateY(-8px);
+}
+
+.badge{
+    margin-top:35px;
+    font-size:90px;
+    animation:floating 3s infinite;
+}
+
+/* ===== Certificate ===== */
+
+.certificate{
+    width:100%;
+    max-width:800px;
+    padding:50px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.certificate::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border:3px solid rgba(255,255,255,0.2);
+    border-radius:28px;
+    pointer-events:none;
+}
+
+.certificate h2{
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+.certificate p{
+    line-height:1.8;
+}
+
+/* ===== Confetti ===== */
+
+.confetti{
+    position:fixed;
+    width:12px;
+    height:12px;
+    top:-20px;
+    animation:fall linear forwards;
+    z-index:9999;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(120vh) rotate(720deg);
+    }
+}
+
+/* ===== Responsive ===== */
+
+@media(max-width:768px){
+
+    .hero h1{
+        font-size:2.5rem;
+    }
+
+    .title{
+        font-size:2.2rem;
+    }
+
+    section{
+        padding:80px 6%;
+    }
+
+    .challenge-container{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+
+</style>
 </head>
-<body class="flex flex-col md:flex-row h-screen overflow-hidden">
 
-    <!-- Chosen Palette: Slate for neutral backgrounds (#f8fafc, #0f172a), Blue for primary interactive elements (#3b82f6, #2563eb), and Amber for accents/highlights. This creates a clean, academic, yet modern and engaging study environment. -->
-    
-    <!-- Application Structure Plan: The SPA is structured as a 'Study Dashboard' with a sidebar navigation (bottom nav on mobile) and a main content area. This structure was chosen to transform a linear document into an interactive study tool. It includes three main views: 1) Dashboard (Overview & Analytics), 2) Materi Utama (Thematic breakdowns of Week 1-5), and 3) Simulasi Kuis (Interactive Flashcards for the 75 Q&A). This allows users to learn the concepts first, then immediately test themselves in a non-linear, engaging way. -->
+<body>
 
-    <!-- Visualization & Content Choices: 
-    1. Overall Topic Breakdown -> Goal: Inform -> Viz: Chart.js Doughnut Chart -> Interaction: Hover tooltips -> Justification: Shows the student visually where the bulk of the exam material lies (e.g., Ethics vs. Writing). -> Method: Chart.js in styled container.
-    2. Week 1-5 Summaries -> Goal: Organize -> Viz: Thematic Cards -> Interaction: Scrollable, clear hierarchy -> Justification: Breaks down heavy text into digestible chunks per week. -> Method: HTML/Tailwind CSS.
-    3. 75+ Q&A Predictions -> Goal: Engage & Test -> Viz: Flashcard Grid -> Interaction: Click to flip (reveal answer), live search filtering -> Justification: Active recall (flashcards) is the most effective study method for oral exams. Live search helps find specific concepts quickly. -> Method: Vanilla JS + CSS 3D transforms. 
-    -->
+<!-- Background -->
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
 
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!-- Floating Emojis -->
+<div class="emoji" style="left:10%; animation-duration:15s;">🎤</div>
+<div class="emoji" style="left:30%; animation-duration:18s;">✨</div>
+<div class="emoji" style="left:55%; animation-duration:20s;">📚</div>
+<div class="emoji" style="left:80%; animation-duration:17s;">🔥</div>
 
-    <nav class="md:w-64 bg-white border-r border-slate-200 flex-shrink-0 z-20 flex flex-col justify-between h-auto md:h-full order-2 md:order-1 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none relative">
-        <div class="p-6 hidden md:block border-b border-slate-100">
-            <h1 class="text-2xl font-extrabold text-blue-600 tracking-tight">PengJur<span class="text-amber-500">Hub</span></h1>
-            <p class="text-xs text-slate-500 mt-1">Master Summary Week 1-5</p>
+<!-- Loading -->
+<div id="loadingScreen">
+    <div class="loader"></div>
+    <div class="loading-title">Loading Public Speaking...</div>
+</div>
+
+<!-- Progress -->
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup"></div>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="hero">
+        <div class="hero-illustration">🎤</div>
+
+        <h1>
+            PUBLIC SPEAKING <br>
+            <span>FOR COMMUNICATION STUDENTS</span>
+        </h1>
+
+        <p class="subtitle typing">
+            Belajar bicara percaya diri, engaging, dan impactful untuk mahasiswa Ilmu Komunikasi.
+        </p>
+
+        <button class="btn pulse-btn" onclick="scrollToSection('problem')">
+            🚀 Mulai Belajar
+        </button>
+    </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+
+    <h2 class="title">😵 Masalah yang Sering Dialami Mahasiswa</h2>
+
+    <p class="subtitle">
+        Banyak mahasiswa sebenarnya punya ide bagus, tapi kesulitan menyampaikannya di depan umum.
+    </p>
+
+    <div class="card-grid">
+
+        <div class="problem-card glass tilt" onclick="showPopup('Tenang, semua public speaker hebat juga pernah blank 😄')">
+            <div class="problem-icon">😰</div>
+            <h3>Blank Saat Presentasi</h3>
+            <p>Tiba-tiba lupa semua isi materi ketika maju ke depan kelas.</p>
         </div>
-        <div class="flex-1 overflow-y-auto hide-scrollbar flex md:flex-col flex-row w-full">
-            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex-1 md:flex-none text-left px-4 md:px-6 py-4 md:py-4 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-3 nav-active">
-                <span class="text-lg md:text-xl">📊</span> <span>Overview</span>
-            </button>
-            <button onclick="switchTab('materi')" id="nav-materi" class="flex-1 md:flex-none text-left px-4 md:px-6 py-4 md:py-4 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-3">
-                <span class="text-lg md:text-xl">📚</span> <span>Materi Utama</span>
-            </button>
-            <button onclick="switchTab('kuis')" id="nav-kuis" class="flex-1 md:flex-none text-left px-4 md:px-6 py-4 md:py-4 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-3 relative">
-                <span class="text-lg md:text-xl">🧠</span> <span>Simulasi Kuis</span>
-                <span class="absolute top-2 right-2 md:relative md:top-0 md:right-0 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">75+</span>
-            </button>
+
+        <div class="problem-card glass tilt" onclick="showPopup('Rasa takut bisa dilatih sedikit demi sedikit 💪')">
+            <div class="problem-icon">🫣</div>
+            <h3>Takut Bicara</h3>
+            <p>Deg-degan berlebihan ketika dilihat banyak orang.</p>
         </div>
-        <div class="p-6 hidden md:block border-t border-slate-100">
-            <div class="bg-blue-50 rounded-xl p-4 text-center border border-blue-100">
-                <p class="text-sm font-semibold text-blue-800">Semangat Kuis Lisan!</p>
-                <p class="text-xs text-blue-600 mt-1">Tarik nafas, santai, dan jawab pakai logika.</p>
+
+        <div class="problem-card glass tilt" onclick="showPopup('Tarik nafas dan atur tempo bicara ✨')">
+            <div class="problem-icon">🎙️</div>
+            <h3>Suara Gemeter</h3>
+            <p>Suara menjadi tidak stabil ketika mulai presentasi.</p>
+        </div>
+
+        <div class="problem-card glass tilt" onclick="showPopup('Mulai saja dengan cerita ringan 😉')">
+            <div class="problem-icon">🤯</div>
+            <h3>Bingung Memulai</h3>
+            <p>Tidak tahu opening yang menarik untuk audiens.</p>
+        </div>
+
+    </div>
+
+    <button class="btn" onclick="scrollToSection('materi')">
+        Lanjut Materi →
+    </button>
+
+</section>
+
+<!-- MATERI -->
+<section id="materi">
+
+    <h2 class="title">📚 Materi Inti Public Speaking</h2>
+
+    <div class="material-container">
+
+        <div class="material-card glass active">
+            <div class="material-icon">👀</div>
+            <h2>Eye Contact</h2>
+            <p>
+                Eye contact membantu audiens merasa terhubung. Jangan fokus ke slide terus-menerus.
+                Cobalah melihat audiens secara bergantian agar presentasi terasa hidup.
+            </p>
+        </div>
+
+        <div class="material-card glass">
+            <div class="material-icon">🎵</div>
+            <h2>Intonasi Suara</h2>
+            <p>
+                Gunakan naik turun nada suara untuk membuat audiens tetap fokus dan tidak bosan.
+            </p>
+        </div>
+
+        <div class="material-card glass">
+            <div class="material-icon">🧍</div>
+            <h2>Body Language</h2>
+            <p>
+                Gestur tangan dan postur tubuh mempengaruhi bagaimana audiens melihat kepercayaan dirimu.
+            </p>
+        </div>
+
+        <div class="material-card glass">
+            <div class="material-icon">🔥</div>
+            <h2>Percaya Diri</h2>
+            <p>
+                Public speaking bukan soal sempurna, tapi soal berani menyampaikan pesan dengan jelas.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn" onclick="prevMaterial()">⬅ Back</button>
+        <button class="btn" onclick="nextMaterial()">Next ➡</button>
+    </div>
+
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+
+    <h2 class="title">🧠 Interactive Quiz</h2>
+
+    <div class="quiz-box glass">
+
+        <div class="question">
+            <h3>1. Apa tujuan eye contact saat presentasi?</h3>
+
+            <div class="option" onclick="checkAnswer(this,true)">
+                Membuat audiens merasa terhubung
+            </div>
+
+            <div class="option" onclick="checkAnswer(this,false)">
+                Agar terlihat tegang
+            </div>
+
+            <div class="option" onclick="checkAnswer(this,false)">
+                Supaya cepat selesai presentasi
             </div>
         </div>
-    </nav>
 
-    <main class="flex-1 overflow-y-auto bg-slate-50 order-1 md:order-2 h-full scroll-smooth">
-        
-        <section id="view-dashboard" class="p-6 md:p-10 max-w-6xl mx-auto animate-fade-in block">
-            <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Selamat Datang di PengJur Hub 👋</h2>
-                <p class="text-slate-600 leading-relaxed text-lg">
-                    Bagian ini adalah <strong>pusat kontrol belajarmu</strong>. Di sini kamu bisa melihat ringkasan visual mengenai bobot materi yang akan diujikan dalam kuis lisan Pengantar Jurnalistik. Grafik di bawah ini memetakan persebaran 75 pertanyaan berdasarkan topik utamanya, membantumu menentukan fokus belajar. Jelajahi aplikasi ini untuk membaca materi lengkap dan melatih daya ingatmu.
+        <div class="question">
+            <h3>2. Body language yang baik adalah...</h3>
+
+            <div class="option" onclick="checkAnswer(this,false)">
+                Menunduk terus
+            </div>
+
+            <div class="option" onclick="checkAnswer(this,true)">
+                Berdiri tegap dan rileks
+            </div>
+
+            <div class="option" onclick="checkAnswer(this,false)">
+                Memegang HP saat presentasi
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>3. Cara mengurangi gugup adalah...</h3>
+
+            <div class="option" onclick="checkAnswer(this,true)">
+                Latihan dan tarik nafas
+            </div>
+
+            <div class="option" onclick="checkAnswer(this,false)">
+                Tidak usah latihan
+            </div>
+
+            <div class="option" onclick="checkAnswer(this,false)">
+                Bicara super cepat
+            </div>
+        </div>
+
+        <div class="score">
+            Score: <span id="score">0</span>/3
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MINI GAME -->
+<section id="challenge">
+
+    <h2 class="title">🎮 Mini Challenge</h2>
+
+    <p class="subtitle">
+        Drag kalimat terbaik ke opening presentation box!
+    </p>
+
+    <div class="challenge-container">
+
+        <div class="draggable glass" draggable="true" id="correctDrag">
+            "Halo semuanya, pernah nggak kalian merasa gugup saat presentasi?"
+        </div>
+
+        <div class="draggable glass" draggable="true">
+            "Saya lupa materi saya..."
+        </div>
+
+        <div class="draggable glass" draggable="true">
+            "Hmm... jadi gini..."
+        </div>
+
+        <div class="dropzone glass" id="dropzone">
+            Drop Opening Terbaik Di Sini
+        </div>
+
+    </div>
+
+</section>
+
+<!-- TIPS -->
+<section id="tips">
+
+    <h2 class="title">💡 Tips Anti Gugup</h2>
+
+    <div class="carousel">
+
+        <div class="tip-track" id="tipTrack">
+
+            <div class="tip-card glass">
+                <h2>🎤 Latihan Sebelum Presentasi</h2>
+                <p>
+                    Semakin sering latihan, semakin kecil rasa gugup yang muncul.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <span>📈</span> Peta Persebaran Soal Kuis
-                    </h3>
-                    <p class="text-sm text-slate-500 mb-6">Visualisasi proporsi 75 pertanyaan prediksi berdasarkan kategori materi dari Week 1 hingga Week 5.</p>
-                    <div class="chart-container">
-                        <canvas id="topicChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-6">
-                    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-2xl shadow-md text-white">
-                        <h3 class="text-xl font-bold mb-2">Cara Pakai Aplikasi Ini</h3>
-                        <ul class="space-y-3 mt-4 text-blue-50">
-                            <li class="flex items-start gap-3">
-                                <span class="bg-white/20 p-1 rounded text-sm">&#10112;</span>
-                                <span>Buka tab <strong>Materi Utama</strong> untuk membaca inti sari dari materi Week 1 sampai Week 5 dengan bahasa yang sangat santai.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="bg-white/20 p-1 rounded text-sm">&#10113;</span>
-                                <span>Pindah ke tab <strong>Simulasi Kuis</strong> untuk melatih hapalanmu menggunakan Flashcard interaktif.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="bg-white/20 p-1 rounded text-sm">&#10114;</span>
-                                <span>Gunakan fitur <strong>Pencarian</strong> di bagian kuis untuk mencari istilah spesifik (misal: "Watchdog" atau "Libel").</span>
-                            </li>
-                        </ul>
-                        <button onclick="switchTab('materi')" class="mt-6 w-full bg-white text-blue-700 font-bold py-3 rounded-xl hover:bg-blue-50 transition-colors shadow-sm">
-                            Mulai Belajar Sekarang &#10142;
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
-                            <span class="text-3xl mb-2">📚</span>
-                            <span class="text-2xl font-black text-slate-800">5</span>
-                            <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Minggu Materi</span>
-                        </div>
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
-                            <span class="text-3xl mb-2">🔥</span>
-                            <span class="text-2xl font-black text-slate-800">75+</span>
-                            <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Soal Prediksi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-materi" class="p-6 md:p-10 max-w-5xl mx-auto animate-fade-in hidden">
-            <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Inti Sari Materi (Week 1 - 5) 📚</h2>
-                <p class="text-slate-600 leading-relaxed text-lg">
-                    Bagian ini berisi <strong>catatan super ringkas dan santai</strong> yang merangkum poin-poin krusial dari presentasi dosen. Materi disusun per minggu agar kamu mudah memahami alur logikanya, mulai dari apa itu jurnalisme hingga bagaimana cara melakukan wawancara yang benar. Baca pelan-pelan dan pahami maknanya, bukan sekadar dihafal.
+            <div class="tip-card glass">
+                <h2>🧘 Atur Nafas</h2>
+                <p>
+                    Tarik nafas perlahan sebelum mulai berbicara.
                 </p>
             </div>
 
-            <div class="space-y-6" id="materi-container">
-            </div>
-        </section>
-
-        <section id="view-kuis" class="p-6 md:p-10 max-w-6xl mx-auto animate-fade-in hidden h-full flex flex-col">
-            <div class="mb-6 flex-shrink-0">
-                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Simulasi Kuis Lisan 🧠</h2>
-                <p class="text-slate-600 leading-relaxed text-lg mb-6">
-                    Bagian ini adalah <strong>arena latihanmu</strong>. Semua prediksi pertanyaan kuis lisan diubah menjadi kartu pintar (Flashcard). Baca pertanyaannya, coba jawab sendiri di dalam hati, lalu <strong>klik kartu tersebut</strong> untuk melihat kunci jawaban yang benar dan santai. Gunakan kotak pencarian untuk mencari topik tertentu.
+            <div class="tip-card glass">
+                <h2>😊 Fokus Pada Pesan</h2>
+                <p>
+                    Jangan fokus pada takut salah, fokuslah pada apa yang ingin disampaikan.
                 </p>
-                
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-xl">&#8981;</span>
-                    <input type="text" id="searchInput" placeholder="Cari pertanyaan atau istilah (contoh: Objektivitas, Nilai Berita)..." class="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all text-slate-700 font-medium shadow-sm outline-none">
-                </div>
-                
-                <div class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar pb-2" id="filter-container">
-                    <button class="filter-btn active bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shadow-sm" onclick="filterCategory('Semua', this)">Semua Topik</button>
-                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Dasar Jurnalisme', this)">Dasar Jurnalisme</button>
-                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Etika & Hukum Pers', this)">Etika & Hukum Pers</button>
-                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Nilai Berita & Proses', this)">Nilai Berita & Proses</button>
-                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Teknik Menulis', this)">Teknik Menulis</button>
-                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Sumber & Wawancara', this)">Sumber & Wawancara</button>
-                    <button class="filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50" onclick="filterCategory('Masa Depan & Lain-lain', this)">Masa Depan & Lain-lain</button>
-                </div>
             </div>
 
-            <div class="flex-1 overflow-y-auto pr-2 pb-20 md:pb-0">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="flashcard-container">
-                </div>
-                <div id="no-results" class="hidden text-center py-12">
-                    <span class="text-4xl">🕵️‍♀️</span>
-                    <h3 class="text-xl font-bold text-slate-700 mt-4">Pencarian tidak ditemukan</h3>
-                    <p class="text-slate-500 mt-2">Coba gunakan kata kunci lain.</p>
-                </div>
-            </div>
-        </section>
+        </div>
 
-    </main>
+    </div>
 
-    <script>
-        const notesData = [
-            {
-                week: "WEEK 1: INTRODUCTION & TRANSFORMASI JURNALISME",
-                icon: "📅",
-                color: "blue",
-                core: "Jurnalisme itu bukan cuma soal nulis, tapi soal proses mencari kebenaran buat orang banyak.",
-                points: [
-                    "<strong>Definisi Jurnalisme:</strong> Proses ngumpulin, nganalisis, verifikasi (cek fakta), dan nyajiin info penting lewat media.",
-                    "<strong>Fungsi Jurnalisme:</strong><br>• <em>Watchdog</em> (Anjing Penjaga): Ngawasin pemerintah biar nggak korupsi/semena-mena.<br>• Pemberi Info: Biar warga tahu kejadian sekitar.<br>• Pendidikan: Ngasih konteks biar orang paham masalah rumit.",
-                    "<strong>Era Baru (Konvergensi):</strong> Jurnalis nggak cuma nulis di koran. Satu jurnalis harus bisa nulis, foto, dan bikin video sekaligus (Multi-skilling).",
-                    "<strong>Konsumsi Berita:</strong> Orang sekarang lebih suka baca berita lewat HP (mobile-first) dan sosmed daripada koran."
-                ]
-            },
-            {
-                week: "WEEK 2: ETIKA, HUKUM PERS, & KREDIBILITAS",
-                icon: "⚖️",
-                color: "amber",
-                core: "Jurnalis punya 'pagar' biar nggak ngasal ngomong dan nggak ngerugiin orang.",
-                points: [
-                    "<strong>Kredibilitas:</strong> 'Mata uang'-nya jurnalis. Sekali bohong, orang nggak bakal percaya lagi.",
-                    "<strong>UU Pers No. 40 Tahun 1999:</strong> Menjamin kebebasan pers tapi tetap menuntut tanggung jawab.",
-                    "<strong>Pencemaran Nama Baik:</strong><br>• Libel: Fitnah tertulis yang merusak reputasi.<br>• Slander: Fitnah lisan (omongan).",
-                    "<strong>Privasi:</strong> Jurnalis dilarang <em>Trespassing</em> (masuk rumah tanpa izin) atau nyebarin rahasia pribadi yang bukan untuk publik.",
-                    "<strong>Hak Cipta:</strong> Dilarang asal copas. Ada <em>Fair Use</em> (penggunaan wajar) asal sebut sumber untuk review/berita."
-                ]
-            },
-            {
-                week: "WEEK 3: WHAT IS NEWS? (NILAI BERITA)",
-                icon: "🧐",
-                color: "emerald",
-                core: "Nggak semua info itu berita. Berita harus punya 'Nilai'.",
-                points: [
-                    "<strong>News Value (Nilai Berita):</strong><br>• Prominence: Tokoh terkenal/Pejabat.<br>• Impact: Dampak ke banyak orang.<br>• Proximity: Kedekatan geografis/emosional.<br>• Timeliness: Kebaruan (Aktual).<br>• Unusualness: Keunikan/Aneh.",
-                    "<strong>Proses 3C:</strong><br>1. Collect: Cari data (observasi, wawancara).<br>2. Construct: Susun cerita pakai rumus 5W+1H.<br>3. Correct: Cek fakta, ejaan, data sebelum tayang."
-                ]
-            },
-            {
-                week: "WEEK 4: TEKNIK MENULIS BERITA",
-                icon: "✍️",
-                color: "purple",
-                core: "Menulis berita itu harus to-the-point dan nggak bertele-tele.",
-                points: [
-                    "<strong>Fokus:</strong> Satu berita = satu pesan utama. Jangan melebar.",
-                    "<strong>Struktur Piramida Terbalik:</strong><br>• Lead (Atas): Info paling penting (5W+1H).<br>• Body (Tengah): Penjelasan detail.<br>• Tail (Bawah): Info tambahan, aman jika dipotong.",
-                    "<strong>Jenis Lead:</strong><br>• Summary Lead: Merangkum langsung (untuk Hard News).<br>• Feature Lead: Bercerita/deskriptif (untuk Soft News)."
-                ]
-            },
-            {
-                week: "WEEK 5: SUMBER & TEKNIK WAWANCARA",
-                icon: "🎤",
-                color: "rose",
-                core: "Jurnalis nggak boleh 'halu'. Semua info harus ada sumbernya.",
-                points: [
-                    "<strong>Jenis Sumber:</strong> Manusia (wawancara), Dokumen, dan Observasi.",
-                    "<strong>Aturan Main:</strong><br>• On the Record: Boleh dikutip, nama disebut.<br>• Off the Record: Boleh didengar, HARAM tayang.<br>• On Background: Boleh dikutip, nama disamarkan (Anonimitas dengan syarat ketat).",
-                    "<strong>Tantangan Wawancara:</strong> Jangan telan mentah-mentah jawaban narasumber. Gunakan <em>The Dumb Factor</em> (pura-pura polos) untuk dapat jawaban jelas."
-                ]
-            }
-        ];
+    <div class="carousel-controls">
+        <button class="btn" onclick="prevTip()">⬅</button>
+        <button class="btn" onclick="nextTip()">➡</button>
+    </div>
 
-        const qaDataRaw = [
-            { c: "Dasar Jurnalisme", q: "Apa sih jurnalisme itu sebenarnya?", a: "Gampangnya, jurnalisme itu kerjaan nyari info beneran, dicek lagi, terus dikasih tahu ke orang banyak lewat media." },
-            { c: "Dasar Jurnalisme", q: "Apa fungsi utama jurnalisme bagi masyarakat?", a: "Biar masyarakat tahu apa yang terjadi (info), paham masalahnya (edukasi), dan ada yang jagain biar pemerintah nggak semena-mena (watchdog)." },
-            { c: "Dasar Jurnalisme", q: "Apa yang dimaksud dengan fungsi 'Watchdog'?", a: "Jurnalis itu kayak anjing penjaga. Kita ngegonggong kalau liat ada pejabat yang korupsi atau salah aturan." },
-            { c: "Dasar Jurnalisme", q: "Kenapa jurnalisme disebut pilar keempat demokrasi?", a: "Karena kalau eksekutif, legislatif, dan yudikatif bermasalah, jurnalisme lah yang ngasih tau rakyat biar rakyat bisa protes." },
-            { c: "Dasar Jurnalisme", q: "Apa perbedaan jurnalisme dulu sama sekarang?", a: "Dulu cuma koran/TV. Sekarang sudah konvergensi, jurnalis harus bisa main di semua platform (web, sosmed, podcast)." },
-            { c: "Dasar Jurnalisme", q: "Apa itu konvergensi media?", a: "Penggabungan berbagai jenis media. Jadi satu kantor berita punya web, TV, dan radio yang saling kerja sama." },
-            { c: "Dasar Jurnalisme", q: "Apa tantangan terbesar jurnalisme di era digital?", a: "Melawan hoaks dan algoritma sosmed yang bikin orang cuma baca apa yang mereka suka aja (echo chamber)." },
-            { c: "Dasar Jurnalisme", q: "Apa itu Citizen Journalism?", a: "Warga biasa yang ngelaporin kejadian (kayak post kecelakaan di Twitter), tapi mereka nggak terikat kode etik jurnalis profesional." },
-            { c: "Dasar Jurnalisme", q: "Apakah konten kreator itu jurnalis?", a: "Belum tentu. Jurnalis wajib terikat kode etik dan disiplin verifikasi, sedangkan konten kreator lebih ke hiburan atau opini pribadi." },
-            { c: "Dasar Jurnalisme", q: "Apa itu jurnalisme multiplatform?", a: "Jurnalis yang satu kontennya bisa disebarin ke TikTok, web, dan YouTube sekaligus." },
-            
-            { c: "Etika & Hukum Pers", q: "Kenapa kredibilitas itu penting buat jurnalis?", a: "Karena kalau orang nggak percaya lagi, berita secanggih apapun nggak bakal didenger. Jurnalis jualan kepercayaan." },
-            { c: "Etika & Hukum Pers", q: "Apa itu UU Pers No. 40 Tahun 1999?", a: "Aturan hukum di Indonesia yang ngejaga biar pers kita bebas tapi tetap bertanggung jawab." },
-            { c: "Etika & Hukum Pers", q: "Apa bedanya Libel sama Slander?", a: "Libel itu fitnah lewat tulisan/gambar, Slander itu fitnah lewat omongan." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Kode Etik Jurnalistik (KEJ)?", a: "Kumpulan aturan perilaku jurnalis (kayak nggak boleh terima suap, harus cek fakta, dsb)." },
-            { c: "Etika & Hukum Pers", q: "Bolehkah jurnalis nerima amplop/uang dari narasumber?", a: "Nggak boleh! Itu namanya gratifikasi dan bisa bikin berita kita nggak netral." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Hak Tolak?", a: "Hak jurnalis buat nggak ngasih tau siapa sumber rahasianya di depan pengadilan sekalipun." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Hak Jawab?", a: "Hak orang yang diberitain salah buat minta media itu nulis pembetulannya." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Hak Koreksi?", a: "Kewajiban media buat benerin berita kalau emang ada yang salah." },
-            { c: "Etika & Hukum Pers", q: "Apa itu pelanggaran privasi dalam jurnalisme?", a: "Nyebarin info pribadi yang nggak ada urusannya sama kepentingan umum (misal: penyakit rahasia seseorang yang nggak nular)." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Trespassing?", a: "Masuk ke properti pribadi orang tanpa izin demi dapet berita. Ini ilegal." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Intrusi?", a: "Ngintip atau pake alat sadap/drone buat dapet info pribadi orang." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Misappropriation?", a: "Pake foto orang buat iklan atau kepentingan lain tanpa izin dia." },
-            { c: "Etika & Hukum Pers", q: "Apa itu Fair Use dalam hak cipta?", a: "Boleh pake karya orang dikit buat review atau berita, asal nggak ngerugiin pemilik aslinya." },
-            { c: "Etika & Hukum Pers", q: "Siapa yang ngawasin pers di Indonesia?", a: "Dewan Pers." },
-            { c: "Etika & Hukum Pers", q: "Apa hukuman kalau jurnalis ngelanggar kode etik?", a: "Bisa ditegur Dewan Pers, medianya diminta minta maaf, atau jurnalisnya dipecat perusahaan." },
+</section>
 
-            { c: "Nilai Berita & Proses", q: "Kenapa informasi belum tentu jadi berita?", a: "Karena nggak semua info punya 'nilai'. 'Saya makan siang' itu info. 'Presiden makan siang di warteg' itu berita karena ada nilai tokoh (prominence)." },
-            { c: "Nilai Berita & Proses", q: "Apa itu nilai 'Proximity'?", a: "Kedekatan. Berita tetangga kamu kemalingan lebih menarik buat kamu daripada berita maling di negara lain." },
-            { c: "Nilai Berita & Proses", q: "Apa itu nilai 'Impact'?", a: "Dampak. Harga BBM naik itu berita besar karena semua orang ngerasain dampaknya." },
-            { c: "Nilai Berita & Proses", q: "Apa itu nilai 'Timeliness'?", a: "Kebaruan. Berita kejadian tadi pagi lebih laku daripada kejadian minggu lalu." },
-            { c: "Nilai Berita & Proses", q: "Apa itu 'Conflict' sebagai nilai berita?", a: "Berantem atau perdebatan itu menarik buat dibaca (misal: debat capres)." },
-            { c: "Nilai Berita & Proses", q: "Jelaskan tahap 'Collect' dalam 3C!", a: "Tahap nyari bahan. Bisa lewat nanya orang, liat data di internet, atau datang langsung ke lokasi." },
-            { c: "Nilai Berita & Proses", q: "Jelaskan tahap 'Construct' dalam 3C!", a: "Tahap nulis. Nyusun bahan-bahan tadi jadi cerita yang enak dibaca pake rumus 5W+1H." },
-            { c: "Nilai Berita & Proses", q: "Jelaskan tahap 'Correct' dalam 3C!", a: "Tahap editing. Cek lagi ada yang typo nggak? Namanya bener nggak? Datanya salah nggak?" },
-            { c: "Nilai Berita & Proses", q: "Apa bedanya Hard News sama Soft News?", a: "Hard News itu berita penting yang harus cepet tayang (politik/bencana). Soft News itu berita santai yang menghibur (lifestyle/wisata)." },
-            { c: "Nilai Berita & Proses", q: "Apa itu Investigative Journalism?", a: "Jurnalisme yang kerjanya kayak detektif buat bongkar rahasia yang ditutup-tutupi orang jahat." },
+<!-- SUMMARY -->
+<section id="summary">
 
-            { c: "Teknik Menulis", q: "Apa itu Lead atau Teras Berita?", a: "Paragraf pertama berita. Isinya harus yang paling penting." },
-            { c: "Teknik Menulis", q: "Kenapa pake rumus Piramida Terbalik?", a: "Biar orang yang cuma punya waktu dikit bisa langsung tau intinya di awal." },
-            { c: "Teknik Menulis", q: "Sebutkan elemen 5W+1H!", a: "Who (Siapa), What (Apa), When (Kapan), Where (Di mana), Why (Kenapa), How (Bagaimana)." },
-            { c: "Teknik Menulis", q: "Apa itu 'So What' factor dalam berita?", a: "Alasan kenapa pembaca harus peduli sama berita itu. Apa untung/ruginya buat mereka?" },
-            { c: "Teknik Menulis", q: "Apa itu Summary Lead?", a: "Lead yang langsung ngerangkum jawaban 5W+1H dalam satu paragraf." },
-            { c: "Teknik Menulis", q: "Apa itu Feature Lead?", a: "Lead yang gayanya bercerita, biasanya pake penggambaran suasana biar pembaca tertarik." },
-            { c: "Teknik Menulis", q: "Apa yang dimaksud dengan 'Focus' dalam menulis berita?", a: "Inti utama cerita. Kalau bahas kecelakaan, fokusnya di korban, jangan tiba-tiba bahas harga mobilnya." },
-            { c: "Teknik Menulis", q: "Apa itu 'Nut Graph'?", a: "Paragraf yang ngejelasin inti berita kalau lead-nya bertipe feature/bercerita." },
-            { c: "Teknik Menulis", q: "Kenapa jurnalis nggak boleh pake kata sifat yang subyektif?", a: "Karena jurnalis harus netral. Jangan tulis 'pemandangan indah', tulis aja deskripsinya biar pembaca yang nilai indah atau nggak." },
-            { c: "Teknik Menulis", q: "Apa itu Attribution (Atribusi)?", a: "Nyebutin sumber info. Misal: 'Kata polisi...', 'Menurut data BPS...'. Ini wajib biar nggak dikira ngarang." },
+    <h2 class="title">📌 Final Summary</h2>
 
-            { c: "Sumber & Wawancara", q: "Apa bedanya sumber primer dan sekunder?", a: "Primer itu yang ngalamin langsung. Sekunder itu yang cuma denger atau baca dari orang lain." },
-            { c: "Sumber & Wawancara", q: "Apa itu wawancara cegat (Doorstop)?", a: "Wawancara langsung di tempat pas narasumber lagi lewat atau keluar ruangan." },
-            { c: "Sumber & Wawancara", q: "Apa itu Off the Record?", a: "Info yang nggak boleh kita tulis atau sebut namanya sama sekali." },
-            { c: "Sumber & Wawancara", q: "Kenapa jurnalis dilarang pake sumber anonim secara sembarangan?", a: "Karena bisa ngurangin kepercayaan pembaca. Orang bakal mikir 'Jangan-jangan jurnalisnya ngarang'." },
-            { c: "Sumber & Wawancara", q: "Apa syarat boleh pake sumber anonim?", a: "Kalau infonya beneran penting dan sumbernya bisa terancam nyawanya/kerjaannya kalau namanya disebut." },
-            { c: "Sumber & Wawancara", q: "Apa itu 'The Dumb Factor' dalam wawancara?", a: "Jurnalis pura-pura nggak tau atau nanya hal simpel biar dapet jawaban yang jelas dan gampang dipahami rakyat." },
-            { c: "Sumber & Wawancara", q: "Bagaimana cara ngadepin narasumber yang jawabannya 'No Comment'?", a: "Coba tanya dari sisi lain, atau tunjukin data yang kita punya biar dia mau ngerespon." },
-            { c: "Sumber & Wawancara", q: "Apa itu transkrip wawancara?", a: "Salinan ketikan dari hasil rekaman wawancara." },
-            { c: "Sumber & Wawancara", q: "Bolehkah jurnalis mengubah kutipan narasumber?", a: "Nggak boleh ngubah maknanya. Kalau cuma ngerapiin 'eh', 'anu', 'anu' itu boleh biar enak dibaca." },
-            { c: "Sumber & Wawancara", q: "Apa itu siaran pers (Press Release)?", a: "Info tertulis dari perusahaan/instansi yang dikirim ke jurnalis buat dijadiin berita." },
+    <div class="summary-grid">
 
-            { c: "Masa Depan & Lain-lain", q: "Apa itu Jurnalisme Data?", a: "Berita yang dibikin berdasarkan olahan data angka-angka yang rumit terus dibikin grafik biar gampang dibaca." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu Fake News?", a: "Info bohong yang sengaja dibikin buat nipu orang." },
-            { c: "Masa Depan & Lain-lain", q: "Apa peran AI dalam jurnalisme masa depan?", a: "Bisa bantu ngetik cepat atau olah data, tapi AI nggak punya nurani dan etika kayak jurnalis manusia." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu Hybrid Newsroom?", a: "Kantor berita yang jurnalisnya ada yang kerja di kantor, ada yang di lapangan, semua terhubung lewat internet." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu literasi digital?", a: "Kemampuan masyarakat buat ngebedain mana berita bener mana berita hoaks." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu independensi jurnalis?", a: "Jurnalis nggak boleh dipihak mana pun. Nggak boleh bela bosnya, nggak boleh bela partai." },
-            { c: "Masa Depan & Lain-lain", q: "Apa arti 'Objektivitas'?", a: "Nyajiin fakta apa adanya tanpa ditambah-tambahin opini pribadi." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu disiplin verifikasi?", a: "Budaya cek dan ricek. Jangan langsung percaya satu sumber." },
-            { c: "Masa Depan & Lain-lain", q: "Apa yang dimaksud dengan jurnalisme kuning (Yellow Journalism)?", a: "Jurnalisme yang cuma ngejar sensasi dan judul yang bombastis tapi isinya nol." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu Clickbait?", a: "Judul yang bikin penasaran tapi seringkali nipu atau nggak sesuai isi demi dapet klik." },
-            { c: "Masa Depan & Lain-lain", q: "Kenapa verifikasi itu 'nyawa' jurnalisme?", a: "Karena tanpa verifikasi, jurnalisme nggak ada bedanya sama gosip di grup WA keluarga." },
-            { c: "Masa Depan & Lain-lain", q: "Apa bedanya narasumber ahli dan narasumber saksi?", a: "Ahli itu yang punya ilmu (Dosen/Dokter), saksi itu yang liat kejadian." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu backgrounder?", a: "Info tambahan soal latar belakang suatu kejadian biar pembaca nggak bingung." },
-            { c: "Masa Depan & Lain-lain", q: "Apa arti jurnalisme advokasi?", a: "Jurnalisme yang secara terang-terangan membela kelompok tertentu (misal: kaum tertindas)." },
-            { c: "Masa Depan & Lain-lain", q: "Bolehkah jurnalis kampanye buat paslon tertentu?", a: "Secara kode etik, jurnalis harus mundur atau non-aktif kalau mau kampanye biar nggak bias." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu pers mahasiswa?", a: "Media yang dikelola mahasiswa di kampus, fungsinya latihan jadi jurnalis beneran." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu Dewan Pers?", a: "Lembaga independen yang jaga kemerdekaan pers dan nyelesein sengketa antara publik dan media." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu Komisi Penyiaran Indonesia (KPI)?", a: "Lembaga yang ngawasin isi siaran di TV dan Radio (bukan web)." },
-            { c: "Masa Depan & Lain-lain", q: "Apa itu jurnalisme damai?", a: "Jurnalisme yang fokus nyari solusi pas ada konflik, bukan malah manas-manasin suasana." },
-            { c: "Masa Depan & Lain-lain", q: "Apa pesan terakhir buat jurnalis masa depan?", a: "Selalu utamakan kepentingan publik dan jangan pernah berhenti verifikasi!" }
-        ];
+        <div class="summary-card glass">
+            <h3>👀 Eye Contact</h3>
+            <p>Membangun koneksi dengan audiens.</p>
+        </div>
 
-        let currentActiveCategory = "Semua";
-        let qaDataFiltered = [...qaDataRaw];
+        <div class="summary-card glass">
+            <h3>🎵 Intonasi</h3>
+            <p>Membuat presentasi lebih hidup.</p>
+        </div>
 
-        function initApp() {
-            renderNotes();
-            renderFlashcards(qaDataRaw);
-            initChart();
-            
-            document.getElementById('searchInput').addEventListener('input', function(e) {
-                const query = e.target.value.toLowerCase();
-                filterData(query, currentActiveCategory);
-            });
+        <div class="summary-card glass">
+            <h3>🧍 Body Language</h3>
+            <p>Meningkatkan kepercayaan diri.</p>
+        </div>
+
+        <div class="summary-card glass">
+            <h3>🔥 Confidence</h3>
+            <p>Keberanian adalah kunci utama.</p>
+        </div>
+
+    </div>
+
+    <div class="badge">🏅</div>
+
+    <button class="btn" onclick="scrollToSection('ending')">
+        Finish Learning →
+    </button>
+
+</section>
+
+<!-- ENDING -->
+<section id="ending">
+
+    <div class="certificate glass">
+
+        <h2>🎉 GREAT JOB!</h2>
+
+        <p>
+            Kamu telah menyelesaikan prototype pembelajaran interaktif
+            Public Speaking for Communication Students.
+        </p>
+
+        <br>
+
+        <h3>🏆 Achievement Unlocked</h3>
+
+        <p>Future Public Speaker</p>
+
+        <div style="margin-top:30px;">
+            <button class="btn" onclick="location.reload()">
+                🔄 Ulang Materi
+            </button>
+
+            <button class="btn" onclick="showPopup('Terima kasih sudah belajar 🎓')">
+                ✅ Selesai
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+/* =========================
+   LOADING SCREEN
+========================= */
+
+window.addEventListener("load",()=>{
+    setTimeout(()=>{
+        document.getElementById("loadingScreen").style.display="none";
+    },2000);
+});
+
+/* =========================
+   SMOOTH SCROLL
+========================= */
+
+function scrollToSection(id){
+    document.getElementById(id).scrollIntoView({
+        behavior:'smooth'
+    });
+}
+
+/* =========================
+   POPUP
+========================= */
+
+function showPopup(text){
+    const popup=document.getElementById("popup");
+    popup.innerHTML=text;
+    popup.classList.add("show");
+
+    setTimeout(()=>{
+        popup.classList.remove("show");
+    },2500);
+}
+
+/* =========================
+   MATERIAL SLIDER
+========================= */
+
+const materials=document.querySelectorAll(".material-card");
+let currentMaterial=0;
+
+function showMaterial(index){
+    materials.forEach(card=>card.classList.remove("active"));
+    materials[index].classList.add("active");
+}
+
+function nextMaterial(){
+    currentMaterial=(currentMaterial+1)%materials.length;
+    showMaterial(currentMaterial);
+}
+
+function prevMaterial(){
+    currentMaterial=(currentMaterial-1+materials.length)%materials.length;
+    showMaterial(currentMaterial);
+}
+
+/* =========================
+   QUIZ
+========================= */
+
+let score=0;
+
+function checkAnswer(element,isCorrect){
+
+    if(element.classList.contains("answered")) return;
+
+    const siblings=element.parentElement.querySelectorAll(".option");
+
+    siblings.forEach(opt=>{
+        opt.classList.add("answered");
+    });
+
+    if(isCorrect){
+        element.classList.add("correct");
+        score++;
+        showPopup("✅ Jawaban Benar!");
+    }else{
+        element.classList.add("wrong");
+        showPopup("❌ Kurang Tepat!");
+    }
+
+    document.getElementById("score").innerText=score;
+
+}
+
+/* =========================
+   DRAG & DROP
+========================= */
+
+const draggables=document.querySelectorAll(".draggable");
+const dropzone=document.getElementById("dropzone");
+
+draggables.forEach(item=>{
+
+    item.addEventListener("dragstart",(e)=>{
+        e.dataTransfer.setData("text",item.id);
+    });
+
+});
+
+dropzone.addEventListener("dragover",(e)=>{
+    e.preventDefault();
+    dropzone.classList.add("hovered");
+});
+
+dropzone.addEventListener("dragleave",()=>{
+    dropzone.classList.remove("hovered");
+});
+
+dropzone.addEventListener("drop",(e)=>{
+    e.preventDefault();
+
+    const data=e.dataTransfer.getData("text");
+
+    if(data==="correctDrag"){
+        dropzone.innerHTML="🎉 Amazing Opening!";
+        showPopup("🔥 Kamu berhasil memilih opening terbaik!");
+        createConfetti();
+    }else{
+        dropzone.innerHTML="😅 Kurang Tepat";
+        showPopup("Coba pilih opening yang lebih engaging!");
+    }
+
+    dropzone.classList.remove("hovered");
+});
+
+/* =========================
+   TIPS CAROUSEL
+========================= */
+
+let currentTip=0;
+const tipTrack=document.getElementById("tipTrack");
+
+function updateTip(){
+    tipTrack.style.transform=`translateX(-${currentTip*100}%)`;
+}
+
+function nextTip(){
+    currentTip=(currentTip+1)%3;
+    updateTip();
+}
+
+function prevTip(){
+    currentTip=(currentTip-1+3)%3;
+    updateTip();
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+window.addEventListener("scroll",()=>{
+
+    const scrollTop=document.documentElement.scrollTop;
+    const height=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+
+    const scrolled=(scrollTop/height)*100;
+
+    document.getElementById("progressBar").style.width=scrolled+"%";
+});
+
+/* =========================
+   TILT EFFECT
+========================= */
+
+const tiltCards=document.querySelectorAll(".tilt");
+
+tiltCards.forEach(card=>{
+
+    card.addEventListener("mousemove",(e)=>{
+
+        const rect=card.getBoundingClientRect();
+
+        const x=e.clientX-rect.left;
+        const y=e.clientY-rect.top;
+
+        const rotateY=((x/rect.width)-0.5)*12;
+        const rotateX=((y/rect.height)-0.5)*-12;
+
+        card.style.transform=
+        `perspective(1000px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        translateY(-8px)`;
+
+    });
+
+    card.addEventListener("mouseleave",()=>{
+        card.style.transform="perspective(1000px) rotateX(0) rotateY(0)";
+    });
+
+});
+
+/* =========================
+   CONFETTI
+========================= */
+
+function createConfetti(){
+
+    for(let i=0;i<100;i++){
+
+        const confetti=document.createElement("div");
+
+        confetti.classList.add("confetti");
+
+        confetti.style.left=Math.random()*100+"vw";
+        confetti.style.background=
+        `hsl(${Math.random()*360},100%,60%)`;
+
+        confetti.style.animationDuration=
+        (Math.random()*3+2)+"s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(()=>{
+            confetti.remove();
+        },5000);
+
+    }
+}
+
+/* =========================
+   AUTO CONFETTI ENDING
+========================= */
+
+const ending=document.getElementById("ending");
+
+const observer=new IntersectionObserver(entries=>{
+
+    entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+            createConfetti();
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('main > section').forEach(el => {
-                el.classList.add('hidden');
-            });
-            
-            const activeSection = document.getElementById(`view-${tabId}`);
-            activeSection.classList.remove('hidden');
-            activeSection.classList.add('animate-fade-in');
+    });
 
-            document.querySelectorAll('nav button').forEach(el => {
-                el.classList.remove('nav-active', 'bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
-                el.classList.add('text-slate-600');
-            });
+});
 
-            const activeBtn = document.getElementById(`nav-${tabId}`);
-            activeBtn.classList.remove('text-slate-600');
-            activeBtn.classList.add('nav-active', 'bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
-            
-            window.scrollTo(0, 0);
-        }
+observer.observe(ending);
 
-        function renderNotes() {
-            const container = document.getElementById('materi-container');
-            container.innerHTML = '';
-            
-            notesData.forEach(note => {
-                const bgColors = {
-                    'blue': 'bg-blue-50 border-blue-200 text-blue-800',
-                    'amber': 'bg-amber-50 border-amber-200 text-amber-800',
-                    'emerald': 'bg-emerald-50 border-emerald-200 text-emerald-800',
-                    'purple': 'bg-purple-50 border-purple-200 text-purple-800',
-                    'rose': 'bg-rose-50 border-rose-200 text-rose-800'
-                };
-                
-                const headerColor = bgColors[note.color];
-                
-                let pointsHtml = note.points.map(p => `<li class="flex items-start gap-3"><span class="text-blue-500 mt-1">&#10004;</span><span>${p}</span></li>`).join('');
+</script>
 
-                const html = `
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6 hover:shadow-md transition-shadow">
-                        <div class="p-6 ${headerColor} border-b flex items-center gap-4">
-                            <span class="text-4xl bg-white p-2 rounded-xl shadow-sm">${note.icon}</span>
-                            <div>
-                                <h3 class="font-extrabold text-xl">${note.week}</h3>
-                                <p class="text-sm opacity-90 font-medium mt-1">Intinya: ${note.core}</p>
-                            </div>
-                        </div>
-                        <div class="p-6 md:p-8">
-                            <ul class="space-y-4 text-slate-700 leading-relaxed">
-                                ${pointsHtml}
-                            </ul>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += html;
-            });
-        }
-
-        function filterCategory(category, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.className = "filter-btn bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-slate-50";
-            });
-            btnElement.className = "filter-btn active bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shadow-sm";
-            
-            currentActiveCategory = category;
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            filterData(query, category);
-        }
-
-        function filterData(query, category) {
-            qaDataFiltered = qaDataRaw.filter(item => {
-                const matchesQuery = item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query) || item.c.toLowerCase().includes(query);
-                const matchesCategory = category === "Semua" || item.c === category;
-                return matchesQuery && matchesCategory;
-            });
-            renderFlashcards(qaDataFiltered);
-        }
-
-        function renderFlashcards(data) {
-            const container = document.getElementById('flashcard-container');
-            const noResults = document.getElementById('no-results');
-            container.innerHTML = '';
-            
-            if (data.length === 0) {
-                container.classList.add('hidden');
-                noResults.classList.remove('hidden');
-                return;
-            } else {
-                container.classList.remove('hidden');
-                noResults.classList.add('hidden');
-            }
-
-            data.forEach((item, index) => {
-                const cardHtml = `
-                    <div class="flip-card h-64 w-full" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <span class="absolute top-4 left-4 text-xs font-bold px-2 py-1 bg-slate-100 text-slate-600 rounded-md">${item.c}</span>
-                                <span class="absolute top-4 right-4 text-slate-300 text-2xl">?</span>
-                                <p class="text-lg font-bold text-center text-slate-800 mt-4 leading-snug">${item.q}</p>
-                                <p class="absolute bottom-4 left-0 right-0 text-center text-xs text-slate-400 font-semibold uppercase tracking-wider">Tap untuk jawaban</p>
-                            </div>
-                            <div class="flip-card-back hide-scrollbar">
-                                <span class="block text-sm font-bold text-blue-200 mb-2 border-b border-blue-400/30 pb-2">Jawaban:</span>
-                                <p class="text-base font-medium leading-relaxed">${item.a}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += cardHtml;
-            });
-        }
-
-        function initChart() {
-            const ctx = document.getElementById('topicChart').getContext('2d');
-            
-            const categoryCounts = {};
-            qaDataRaw.forEach(item => {
-                categoryCounts[item.c] = (categoryCounts[item.c] || 0) + 1;
-            });
-
-            const labels = Object.keys(categoryCounts);
-            const data = Object.values(categoryCounts);
-
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: [
-                            '#3b82f6', 
-                            '#f59e0b', 
-                            '#10b981', 
-                            '#8b5cf6', 
-                            '#f43f5e', 
-                            '#64748b'  
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 10
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                font: {
-                                    family: "'Plus Jakarta Sans', sans-serif",
-                                    size: 11,
-                                    weight: '600'
-                                },
-                                color: '#475569',
-                                usePointStyle: true,
-                                padding: 20
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                            titleFont: { size: 13, family: "'Plus Jakarta Sans', sans-serif" },
-                            bodyFont: { size: 14, family: "'Plus Jakarta Sans', sans-serif", weight: 'bold' },
-                            padding: 12,
-                            cornerRadius: 8,
-                            callbacks: {
-                                label: function(context) {
-                                    return ` ${context.raw} Pertanyaan`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '70%',
-                    layout: {
-                        padding: 10
-                    }
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
 </body>
 </html>
